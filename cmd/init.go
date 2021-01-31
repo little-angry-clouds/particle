@@ -1,17 +1,17 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
 // initCmd represents the init command
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "A brief description of your command",
+	Short: "Initialize the code and include default particle directory.",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("init called")
+		if len(args) == 0 {
+			_ = cmd.Help()
+		}
 	},
 }
 

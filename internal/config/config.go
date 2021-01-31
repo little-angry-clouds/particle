@@ -1,0 +1,59 @@
+package config
+
+import (
+	"errors"
+	"os"
+
+	"gopkg.in/yaml.v2"
+)
+
+type ParticleConfiguration struct {
+	Driver Driver `yaml:"driver"`
+	Provisioner Provisioner `yaml:"provisioner"`
+}
+
+type Driver struct {
+	Name string `yaml:"name"`
+}
+
+type Provisioner struct {
+	Name string `yaml:"name"`
+}
+
+func CreateConfiguration(name string, scenario string, configuration ParticleConfiguration) error {
+	var configDirPath string = name + "/particle/" + scenario + "/"
+	var configFilePath string = configDirPath + "particle.yml"
+	var err error
+
+	// Check if the directory exists
+	_, err = os.Stat(configDirPath)
+	if !os.IsNotExist(err) {
+		return errors.New("particle already initialiazed")
+	}
+
+	// Create directory
+	err = os.MkdirAll(configDirPath, 0755)
+	if err != nil {
+		return err
+	}
+
+	// Create the configuration file
+	conf, err := yaml.Marshal(configuration)
+	if err != nil {
+		return err
+	}
+
+	f, err := os.Create(configFilePath)
+	if err != nil {
+		return err
+	}
+
+	defer f.Close()
+
+	_, err = f.Write(conf)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
