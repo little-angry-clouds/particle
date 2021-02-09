@@ -26,7 +26,7 @@ clean:
 	-rm -r releases/
 
 static: | $(GOLANGCI-LINT) $(GOPHERBADGER)
-	$(GOLANGCI-LINT) run ./... --timeout 2m0s
+	$(GOLANGCI-LINT) run ./... --fix
 	$(GOPHERBADGER) -md="README.md"
 
 unit:
