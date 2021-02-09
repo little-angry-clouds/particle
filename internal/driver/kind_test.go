@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"io"
 	"testing"
 
 	"github.com/little-angry-clouds/particle/internal/config"
@@ -12,27 +11,32 @@ import (
 )
 
 type FakeCli struct {
-	Path   string
-	Args   []string
-	Stderr io.Writer
+	InitializeError error
+	RunError        error
 }
 
 func (c *FakeCli) Run() error {
-	return nil
+	return c.RunError
 }
 
 func (c *FakeCli) Initialize([]string) error {
-	return nil
+	return c.InitializeError
 }
 
 func TestCreate(t *testing.T) { // nolint: funlen
 	var test = []struct {
-		testName   string
-		k8sVersion interface{}
-		error      error
+		testName        string
+		k8sVersion      interface{}
+		expectedError   error
+		runError        error
+		initializeError error
 	}{
-		{"1", config.Key("1.19.0"), nil},
-		{"2", "1.19.1", errors.New("kubernetes_version has incorrect type, should be string")},
+		{"1", config.Key("1.19.0"), nil, nil, nil},
+		{"2", config.Key("1.19.0"), errors.New("fake error"), errors.New("fake error"), nil},
+		{"3", config.Key("1.19.0"), errors.New("fake error"), nil, errors.New("fake error")},
+		{"4", "1.19.1", errors.New("kubernetes_version has incorrect type, should be string"), nil, nil},
+		{"5", "1.19.1", errors.New("kubernetes_version has incorrect type, should be string"), errors.New("fake"), nil},
+		{"6", "1.19.1", errors.New("kubernetes_version has incorrect type, should be string"), nil, errors.New("fake")},
 	}
 
 	for _, tt := range test {
@@ -41,17 +45,25 @@ func TestCreate(t *testing.T) { // nolint: funlen
 			var err error
 			var ctx context.Context = context.Background()
 			var drv Kind = Kind{}
-			var cli FakeCli = FakeCli{}
+			var cli FakeCli = FakeCli{
+				InitializeError: tt.initializeError,
+				RunError:        tt.runError,
+			}
 			var kubernetesVersion config.Key = "kubernetesVersion"
 
-	if tt.k8sVersion != "" {
-			ctx = context.WithValue(ctx, kubernetesVersion, tt.k8sVersion)
-	}
+			if tt.k8sVersion != "" {
+				ctx = context.WithValue(ctx, kubernetesVersion, tt.k8sVersion)
+			}
+
 			err = drv.Create(ctx, &cli)
 			t.Log(fmt.Sprintf("error: %s", err))
 			t.Log(fmt.Sprintf("ctx value: %s", ctx.Value(kubernetesVersion)))
 
-			assert.Equal(t, err, tt.error)
+			assert.Equal(t, err, tt.expectedError)
+		})
+	}
+}
+
 		})
 	}
 }
