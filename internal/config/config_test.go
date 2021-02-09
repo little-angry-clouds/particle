@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestConfigurationCreate(t *testing.T) { // nolint: funlen
+func TestCreateConfiguration(t *testing.T) { // nolint: funlen
 	var test = []struct {
 		testName string
 		path     string

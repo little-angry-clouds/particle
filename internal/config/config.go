@@ -2,26 +2,30 @@ package config
 
 import (
 	"errors"
+	"io/ioutil"
 	"os"
 
 	"gopkg.in/yaml.v2"
 )
 
+type Key string
+
 type ParticleConfiguration struct {
-	Driver Driver `yaml:"driver"`
+	Driver      Driver      `yaml:"driver"`
 	Provisioner Provisioner `yaml:"provisioner"`
 }
 
 type Driver struct {
-	Name string `yaml:"name"`
+	Name              string `yaml:"name"`
+	KubernetesVersion Key    `yaml:"kubernetes_version"`
 }
 
 type Provisioner struct {
 	Name string `yaml:"name"`
 }
 
-func CreateConfiguration(name string, scenario string, configuration ParticleConfiguration) error {
-	var configDirPath string = name + "/particle/" + scenario + "/"
+func CreateConfiguration(path string, scenario string, configuration ParticleConfiguration) error {
+	var configDirPath string = path + "/particle/" + scenario + "/"
 	var configFilePath string = configDirPath + "particle.yml"
 	var err error
 
