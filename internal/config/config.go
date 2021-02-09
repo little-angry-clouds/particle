@@ -61,3 +61,30 @@ func CreateConfiguration(path string, scenario string, configuration ParticleCon
 
 	return nil
 }
+
+func ReadConfiguration(scenario string) (ParticleConfiguration, error) {
+	var configuration ParticleConfiguration = ParticleConfiguration{}
+	var configDirPath string = "particle/" + scenario + "/"
+	var configFilePath string = configDirPath + "particle.yml"
+	var err error
+
+	// Check if the directory exists
+	_, err = os.Stat(configDirPath)
+	if os.IsNotExist(err) {
+		return configuration, errors.New("particle is not initialiazed")
+	}
+
+	// Read the configuration file
+	configBinary, err := ioutil.ReadFile(configFilePath)
+	if err != nil {
+		return configuration, err
+	}
+
+	// Create the configuration file
+	err = yaml.Unmarshal(configBinary, &configuration)
+	if err != nil {
+		return configuration, err
+	}
+
+	return configuration, nil
+}

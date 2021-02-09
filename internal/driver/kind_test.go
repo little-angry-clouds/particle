@@ -64,6 +64,33 @@ func TestCreate(t *testing.T) { // nolint: funlen
 	}
 }
 
+func TestDestroy(t *testing.T) { // nolint: funlen
+	var test = []struct {
+		testName        string
+		expectedError   error
+		runError        error
+		initializeError error
+	}{
+		{"1", nil, nil, nil},
+		{"2", errors.New("fake error"), errors.New("fake error"), nil},
+		{"3", errors.New("fake error"), nil, errors.New("fake error")},
+	}
+
+	for _, tt := range test {
+		tt := tt
+		t.Run(tt.testName, func(t *testing.T) {
+			var err error
+			var ctx context.Context = context.Background()
+			var drv Kind = Kind{}
+			var cli FakeCli = FakeCli{
+				InitializeError: tt.initializeError,
+				RunError:        tt.runError,
+			}
+
+			err = drv.Destroy(ctx, &cli)
+			t.Log(fmt.Sprintf("error: %s", err))
+
+			assert.Equal(t, err, tt.expectedError)
 		})
 	}
 }

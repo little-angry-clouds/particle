@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"os"
-	"os/exec"
 	"path/filepath"
 
 	"github.com/little-angry-clouds/particle/internal/config"
@@ -36,6 +35,33 @@ func (k *Kind) Create(ctx context.Context, cmd Cmd) error {
 			return errors.New("kubernetes_version has incorrect type, should be string")
 		}
 	}
+
+	err = cmd.Initialize(args)
+	if err != nil {
+		return err
+	}
+
+	err = cmd.Run()
+	if err != nil {
+		return err
+	}
+
+	return err
+}
+
+func (k *Kind) Destroy(ctx context.Context, cmd Cmd) error {
+	var err error
+	var name string
+
+	// Use the directory as the cluster ID
+	path, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+
+	name = filepath.Base(path)
+
+	args := []string{"kind", "delete", "cluster", "--name", name}
 
 	err = cmd.Initialize(args)
 	if err != nil {
