@@ -14,6 +14,7 @@ import (
 func chart(cmd *cobra.Command, args []string) {
 	var driver string = "kind"
 	var chartName string = args[0]
+	// TODO add support to manage scenarios
 	var scenario string = "default"
 	var supportedDrivers = []string{driver}
 	var err error

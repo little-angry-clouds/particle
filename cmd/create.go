@@ -31,6 +31,7 @@ func create(cmd *cobra.Command, args []string) {
 	if configuration.Driver.KubernetesVersion != "" {
 		ctx = context.WithValue(ctx, kubernetesVersion, configuration.Driver.KubernetesVersion)
 	}
+
 	err = drv.Create(ctx, &cli)
 	helpers.CheckGenericError(err)
 }

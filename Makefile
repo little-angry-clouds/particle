@@ -30,7 +30,7 @@ static: | $(GOLANGCI-LINT) $(GOPHERBADGER)
 	$(GOPHERBADGER) -md="README.md"
 
 unit:
-	go test ./... -cover
+	go test ./... -cover -v
 
 PLATFORMS := linux-amd64 linux-386 darwin-amd64 windows-amd64 windows-386
 temp = $(subst -, ,$@)

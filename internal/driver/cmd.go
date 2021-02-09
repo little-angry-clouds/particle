@@ -6,7 +6,6 @@ import (
 	"os/exec"
 )
 
-
 type Cmd interface {
 	Initialize([]string) error
 	Run() error
@@ -23,6 +22,7 @@ func (c *CLI) Run() error {
 	cmd.Args = c.Args
 	cmd.Path = c.Path
 	cmd.Stderr = c.Stderr
+
 	return cmd.Run()
 }
 
@@ -34,6 +34,7 @@ func (c *CLI) Initialize(args []string) error {
 	if err != nil {
 		return err
 	}
+
 	c.Path = path
 
 	return nil
