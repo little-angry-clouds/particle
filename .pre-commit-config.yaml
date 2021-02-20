@@ -1,6 +1,12 @@
 ---
+repos:
 - repo: git://github.com/dnephin/pre-commit-golang
   rev: master
   hooks:
-    - id: golangci-lint
     - id: go-mod-tidy
+- repo: local
+  hooks:
+    - id: golangci-lint
+      entry: make static
+      name: golangci-lint
+      language: system

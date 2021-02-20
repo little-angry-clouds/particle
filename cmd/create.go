@@ -23,7 +23,7 @@ func create(cmd *cobra.Command, args []string) {
 	helpers.CheckGenericError(err)
 
 	if configuration.Driver.Name == "kind" {
-		cli = driver.CLI{}
+		cli = driver.CLI{Binary: "kind"}
 		drv = &driver.Kind{}
 	}
 

@@ -12,6 +12,7 @@ type Cmd interface {
 }
 
 type CLI struct {
+	Binary string
 	Path   string
 	Args   []string
 	Stderr io.Writer
@@ -30,7 +31,7 @@ func (c *CLI) Initialize(args []string) error {
 	c.Args = args
 	c.Stderr = os.Stderr
 
-	path, err := exec.LookPath("kind")
+	path, err := exec.LookPath(c.Binary)
 	if err != nil {
 		return err
 	}
