@@ -6,12 +6,13 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/little-angry-clouds/particle/internal/cmd"
 	"github.com/little-angry-clouds/particle/internal/config"
 )
 
 type Kind struct{}
 
-func (k *Kind) Create(ctx context.Context, cmd Cmd) error {
+func (k *Kind) Create(ctx context.Context, cmd cmd.Cmd) error {
 	var err error
 	var name string
 	var kubernetesVersion config.Key = "kubernetesVersion"
@@ -49,7 +50,7 @@ func (k *Kind) Create(ctx context.Context, cmd Cmd) error {
 	return err
 }
 
-func (k *Kind) Destroy(ctx context.Context, cmd Cmd) error {
+func (k *Kind) Destroy(ctx context.Context, cmd cmd.Cmd) error {
 	var err error
 	var name string
 
