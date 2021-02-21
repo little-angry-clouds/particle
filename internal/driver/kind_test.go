@@ -32,11 +32,9 @@ func TestCreate(t *testing.T) { // nolint: funlen
 		initializeError error
 	}{
 		{"1", config.Key("1.19.0"), nil, nil, nil},
-		{"2", config.Key("1.19.0"), errors.New("fake error"), errors.New("fake error"), nil},
-		{"3", config.Key("1.19.0"), errors.New("fake error"), nil, errors.New("fake error")},
+		{"2", config.Key("1.19.0"), errors.New("initialize error"), errors.New("initialize error"), nil},
+		{"3", config.Key("1.19.0"), errors.New("run error"), nil, errors.New("run error")},
 		{"4", "1.19.1", errors.New("kubernetes_version has incorrect type, should be string"), nil, nil},
-		{"5", "1.19.1", errors.New("kubernetes_version has incorrect type, should be string"), errors.New("fake"), nil},
-		{"6", "1.19.1", errors.New("kubernetes_version has incorrect type, should be string"), nil, errors.New("fake")},
 	}
 
 	for _, tt := range test {
