@@ -16,6 +16,7 @@ type CLI struct {
 	Path   string
 	Args   []string
 	Stderr io.Writer
+	Stdout io.Writer
 }
 
 func (c *CLI) Run() error {
@@ -23,6 +24,7 @@ func (c *CLI) Run() error {
 	cmd.Args = c.Args
 	cmd.Path = c.Path
 	cmd.Stderr = c.Stderr
+	cmd.Stdout = c.Stdout
 
 	return cmd.Run()
 }
@@ -30,6 +32,7 @@ func (c *CLI) Run() error {
 func (c *CLI) Initialize(args []string) error {
 	c.Args = args
 	c.Stderr = os.Stderr
+	c.Stdout = os.Stdout
 
 	path, err := exec.LookPath(c.Binary)
 	if err != nil {
