@@ -8,4 +8,5 @@ import (
 
 type Provisioner interface {
 	Converge(context.Context, cmd.Cmd) error
+	Cleanup(context.Context, cmd.Cmd) error
 }

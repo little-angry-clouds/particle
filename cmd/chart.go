@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/little-angry-clouds/particle/internal/config"
-	"github.com/little-angry-clouds/particle/internal/helpers"
 	"github.com/spf13/cobra"
 	"helm.sh/helm/v3/pkg/chartutil"
+
+	"github.com/little-angry-clouds/particle/internal/config"
+	"github.com/little-angry-clouds/particle/internal/helpers"
 )
 
 func chart(cmd *cobra.Command, args []string) {
@@ -49,7 +50,7 @@ func chart(cmd *cobra.Command, args []string) {
 	fmt.Println("Chart created.")
 
 	configuration.Driver.Name = driver
-	configuration.Provisioner.Name = "helm"
+	configuration.Provisioner.Name = helm
 	configuration.Lint = lint
 	err = config.CreateConfiguration(chartName, scenario, configuration)
 	helpers.CheckGenericError(err)

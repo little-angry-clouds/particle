@@ -23,7 +23,7 @@ func converge(cmd *cobra.Command, args []string) {
 	configuration, err = config.ReadConfiguration(scenario)
 	helpers.CheckGenericError(err)
 
-	if configuration.Provisioner.Name == "helm" {
+	if configuration.Provisioner.Name == helm {
 		cli = c.CLI{Binary: "helm"}
 		prv = &provisioner.Helm{}
 	}
