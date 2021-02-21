@@ -1,14 +1,11 @@
 package cmd
 
 import (
-	"context"
-
 	"github.com/spf13/cobra"
 
-	c "github.com/little-angry-clouds/particle/internal/cmd"
+	"github.com/little-angry-clouds/particle/internal/cli"
 	"github.com/little-angry-clouds/particle/internal/config"
 	"github.com/little-angry-clouds/particle/internal/helpers"
-	"github.com/little-angry-clouds/particle/internal/provisioner"
 )
 
 func cleanup(cmd *cobra.Command, args []string) {
@@ -16,19 +13,11 @@ func cleanup(cmd *cobra.Command, args []string) {
 	var scenario string = "default"
 	var configuration config.ParticleConfiguration
 	var err error
-	var prv provisioner.Provisioner
-	var ctx context.Context = context.Background()
-	var cli c.CLI
 
 	configuration, err = config.ReadConfiguration(scenario)
 	helpers.CheckGenericError(err)
 
-	if configuration.Provisioner.Name == helm {
-		cli = c.CLI{Binary: "helm"}
-		prv = &provisioner.Helm{}
-	}
-
-	err = prv.Cleanup(ctx, &cli)
+	err = cli.Cleanup(scenario, configuration)
 	helpers.CheckGenericError(err)
 }
 
