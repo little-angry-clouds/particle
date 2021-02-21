@@ -24,7 +24,7 @@ func (k *Kind) Create(ctx context.Context, cmd cmd.Cmd) error {
 
 	name = filepath.Base(path)
 
-	args := []string{"kind", "create", "cluster", "--name", name}
+	args := []string{"kind", "create", "cluster", "--wait", "1m", "--name", name}
 
 	// Check if k8s version is set
 	version := ctx.Value(kubernetesVersion)
