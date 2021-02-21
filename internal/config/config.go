@@ -13,6 +13,7 @@ type Key string
 type ParticleConfiguration struct {
 	Driver      Driver      `yaml:"driver"`
 	Provisioner Provisioner `yaml:"provisioner"`
+	Lint        string      `yaml:"lint"`
 }
 
 type Driver struct {

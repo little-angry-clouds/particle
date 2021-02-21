@@ -12,13 +12,14 @@ import (
 )
 
 func chart(cmd *cobra.Command, args []string) {
-	var driver string = "kind"
-	var chartName string = args[0]
 	// TODO add support to manage scenarios
 	var scenario string = "default"
+	var driver string = "kind"
+	var chartName string = args[0]
 	var supportedDrivers = []string{driver}
 	var err error
 	var configuration config.ParticleConfiguration
+	var lint string = "set -e\nhelm lint"
 
 	driver, err = cmd.Flags().GetString("driver")
 	helpers.CheckGenericError(err)
@@ -49,6 +50,7 @@ func chart(cmd *cobra.Command, args []string) {
 
 	configuration.Driver.Name = driver
 	configuration.Provisioner.Name = "helm"
+	configuration.Lint = lint
 	err = config.CreateConfiguration(chartName, scenario, configuration)
 	helpers.CheckGenericError(err)
 	fmt.Println("Particle initialized.")
