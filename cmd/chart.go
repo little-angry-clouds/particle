@@ -52,6 +52,7 @@ func chart(cmd *cobra.Command, args []string) {
 	configuration.Driver.Name = driver
 	configuration.Provisioner.Name = helm
 	configuration.Lint = lint
+	configuration.Verifier.Name = "helm"
 	err = config.CreateConfiguration(chartName, scenario, configuration)
 	helpers.CheckGenericError(err)
 	fmt.Println("Particle initialized.")

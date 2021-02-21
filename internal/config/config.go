@@ -14,6 +14,7 @@ type ParticleConfiguration struct {
 	Driver      Driver      `yaml:"driver"`
 	Provisioner Provisioner `yaml:"provisioner"`
 	Lint        string      `yaml:"lint"`
+	Verifier    Verifier    `yaml:"verifier"`
 }
 
 type Driver struct {
@@ -22,6 +23,10 @@ type Driver struct {
 }
 
 type Provisioner struct {
+	Name string `yaml:"name"`
+}
+
+type Verifier struct {
 	Name string `yaml:"name"`
 }
 
