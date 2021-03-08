@@ -20,7 +20,6 @@ linters:
     - gosec
     - interfacer
     - unconvert
-    - dupl
     - goconst
     - maligned
     - depguard

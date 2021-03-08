@@ -3,12 +3,13 @@ package cli
 import (
 	"context"
 
+	"github.com/apex/log"
 	"github.com/little-angry-clouds/particle/internal/cmd"
 	"github.com/little-angry-clouds/particle/internal/config"
 	"github.com/little-angry-clouds/particle/internal/provisioner"
 )
 
-func Cleanup(scenario string, configuration config.ParticleConfiguration) error {
+func Cleanup(scenario string, configuration config.ParticleConfiguration, logger *log.Entry) error {
 	var err error
 	var cli cmd.CLI
 	var prv provisioner.Provisioner
@@ -21,13 +22,10 @@ func Cleanup(scenario string, configuration config.ParticleConfiguration) error 
 
 	if configuration.Provisioner.Name == helm {
 		cli = cmd.CLI{Binary: "helm"}
-		prv = &provisioner.Helm{}
+		prv = &provisioner.Helm{Logger: logger}
 	}
 
 	err = prv.Cleanup(ctx, &cli)
-	if err != nil {
-		return err
-	}
 
 	return err
 }

@@ -1,17 +1,18 @@
 package cli
 
 import (
+	"github.com/apex/log"
 	"github.com/little-angry-clouds/particle/internal/cmd"
 	"github.com/little-angry-clouds/particle/internal/config"
 )
 
-func Lint(scenario string, configuration config.ParticleConfiguration) error {
+func Lint(scenario string, configuration config.ParticleConfiguration, logger *log.Entry) error {
 	var err error
 	var cli cmd.CLI = cmd.CLI{Binary: "bash"}
 
 	cmdArgs := []string{"bash", "-c", configuration.Lint}
 
-	err = cli.Initialize(cmdArgs)
+	err = cli.Initialize(logger, cmdArgs)
 	if err != nil {
 		return err
 	}

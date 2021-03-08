@@ -6,16 +6,20 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/apex/log"
 	"github.com/little-angry-clouds/particle/internal/cmd"
 	"github.com/little-angry-clouds/particle/internal/config"
 )
 
-type Kind struct{}
+type Kind struct {
+	Logger *log.Entry
+}
 
 func (k *Kind) Create(ctx context.Context, cmd cmd.Cmd) error {
+	var logger *log.Entry = k.Logger
+	var kubernetesVersion config.Key = "kubernetesVersion"
 	var err error
 	var name string
-	var kubernetesVersion config.Key = "kubernetesVersion"
 
 	path, err := os.Getwd()
 	if err != nil {
@@ -37,20 +41,18 @@ func (k *Kind) Create(ctx context.Context, cmd cmd.Cmd) error {
 		}
 	}
 
-	err = cmd.Initialize(args)
+	err = cmd.Initialize(logger, args)
 	if err != nil {
 		return err
 	}
 
 	err = cmd.Run()
-	if err != nil {
-		return err
-	}
 
 	return err
 }
 
 func (k *Kind) Destroy(ctx context.Context, cmd cmd.Cmd) error {
+	var logger *log.Entry = k.Logger
 	var err error
 	var name string
 
@@ -64,15 +66,12 @@ func (k *Kind) Destroy(ctx context.Context, cmd cmd.Cmd) error {
 
 	args := []string{"kind", "delete", "cluster", "--name", name}
 
-	err = cmd.Initialize(args)
+	err = cmd.Initialize(logger, args)
 	if err != nil {
 		return err
 	}
 
 	err = cmd.Run()
-	if err != nil {
-		return err
-	}
 
 	return err
 }

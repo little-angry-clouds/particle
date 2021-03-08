@@ -10,10 +10,12 @@ import (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "particle",
-	Short: "A brief description of your application",
+	Short: "Particle is a project designed to aid in the development and testing of kubernetes resources",
 }
 
 func Execute() {
+	rootCmd.PersistentFlags().Bool("debug", false, "when true gets more verbose logs")
+
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)

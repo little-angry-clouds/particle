@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/apex/log"
+
 	"github.com/little-angry-clouds/particle/internal/config"
 	"github.com/stretchr/testify/assert"
 )
@@ -19,7 +21,7 @@ func (c *FakeCli) Run() error {
 	return c.RunError
 }
 
-func (c *FakeCli) Initialize([]string) error {
+func (c *FakeCli) Initialize(*log.Entry, []string) error {
 	return c.InitializeError
 }
 

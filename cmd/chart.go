@@ -4,7 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 
+	"github.com/apex/log"
 	"github.com/spf13/cobra"
 	"helm.sh/helm/v3/pkg/chartutil"
 
@@ -18,44 +20,56 @@ func chart(cmd *cobra.Command, args []string) {
 	var driver string = "kind"
 	var chartName string = args[0]
 	var supportedDrivers = []string{driver}
+	var lint string = "set -e\nhelm lint"
+	var debug bool
 	var err error
 	var configuration config.ParticleConfiguration
-	var lint string = "set -e\nhelm lint"
+
+	debug, _ = cmd.Flags().GetBool("debug")
+
+	logger := helpers.GetLogger(debug)
+
+	logger.Info("Begin initialization")
 
 	driver, err = cmd.Flags().GetString("driver")
-	helpers.CheckGenericError(err)
+	helpers.CheckGenericError(logger, err)
 
 	if !helpers.StringInSlice(supportedDrivers, driver) {
-		fmt.Printf("\"%s\" is not a valid value for the flag \"driver\".\n", driver)
-		os.Exit(1)
+		logger.Error(fmt.Sprintf("\"%s\" is not a valid value for the flag \"driver\"\n", driver))
 	}
 
 	// Check if the chart's directory exists and create it if not
 	_, err = os.Stat(chartName)
 	if !os.IsNotExist(err) {
-		fmt.Println("Chart already exists.")
-		os.Exit(1)
+		err = errors.New("Chart already exists")
+		helpers.CheckGenericError(logger, err)
 	}
 
 	err = os.MkdirAll(chartName, 0755)
-	helpers.CheckGenericError(err)
+	helpers.CheckGenericError(logger, err)
 
 	// Create chart
 	if _, err = chartutil.Create(chartName, ""); err != nil {
-		fmt.Println("Could not create chart: ")
-		fmt.Println(err)
-		os.Exit(1)
+		err = errors.New("Could not create chart")
+		helpers.CheckGenericError(logger, err)
 	}
-
-	fmt.Println("Chart created.")
 
 	configuration.Driver.Name = driver
 	configuration.Provisioner.Name = helm
 	configuration.Lint = lint
-	configuration.Verifier.Name = "helm"
+	configuration.Verifier.Name = helm
+
+	logger.WithFields(log.Fields{
+		"driver":      driver,
+		"provisioner": helm,
+		"verifier":    helm,
+		"lint":        strings.Replace(lint, "\n", " && ", -1),
+	}).Debug("Configuration to create")
+
 	err = config.CreateConfiguration(chartName, scenario, configuration)
-	helpers.CheckGenericError(err)
-	fmt.Println("Particle initialized.")
+	helpers.CheckGenericError(logger, err)
+
+	logger.Info("Initialization finished")
 }
 
 // chartCmd represents the chart command

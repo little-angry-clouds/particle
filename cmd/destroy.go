@@ -1,6 +1,9 @@
 package cmd
 
 import (
+	"strings"
+
+	"github.com/apex/log"
 	"github.com/spf13/cobra"
 
 	"github.com/little-angry-clouds/particle/internal/cli"
@@ -13,12 +16,29 @@ func destroy(cmd *cobra.Command, args []string) {
 	var scenario string = "default"
 	var configuration config.ParticleConfiguration
 	var err error
+	var debug bool
+
+	debug, _ = cmd.Flags().GetBool("debug")
+
+	logger := helpers.GetLogger(debug)
+
+	logger.Info("Begin destroy")
 
 	configuration, err = config.ReadConfiguration(scenario)
-	helpers.CheckGenericError(err)
+	helpers.CheckGenericError(logger, err)
+
+	logger.WithFields(log.Fields{
+		"driver":      configuration.Driver.Name,
+		"provisioner": configuration.Provisioner.Name,
+		"verifier":    configuration.Verifier.Name,
+		"lint":        strings.Replace(configuration.Lint, "\n", " && ", -1),
+	}).Debug("Configuration to use")
 
 	err = cli.Destroy(scenario, configuration)
-	helpers.CheckGenericError(err)
+	helpers.CheckGenericError(logger, err)
+	err = cli.Destroy(scenario, configuration, logger)
+
+	logger.Info("Destroy finished")
 }
 
 // destroyCmd represents the destroy command

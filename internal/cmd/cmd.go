@@ -7,7 +7,7 @@ import (
 )
 
 type Cmd interface {
-	Initialize([]string) error
+	Initialize(*log.Entry, []string) error
 	Run() error
 }
 
@@ -17,6 +17,7 @@ type CLI struct {
 	Args   []string
 	Stderr io.Writer
 	Stdout io.Writer
+	Logger *log.Entry
 }
 
 func (c *CLI) Run() error {
