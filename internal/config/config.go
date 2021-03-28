@@ -11,23 +11,23 @@ import (
 type Key string
 
 type ParticleConfiguration struct {
-	Driver      Driver      `yaml:"driver"`
-	Provisioner Provisioner `yaml:"provisioner"`
-	Lint        string      `yaml:"lint"`
-	Verifier    Verifier    `yaml:"verifier"`
+	Driver      Driver      `yaml:"driver" validate:"required"`
+	Provisioner Provisioner `yaml:"provisioner" validate:"required"`
+	Lint        string      `yaml:"lint" validate:"required"`
+	Verifier    Verifier    `yaml:"verifier" validate:"required,eq=helm"`
 }
 
 type Driver struct {
-	Name              string `yaml:"name"`
+	Name              string `yaml:"name" validate:"required,eq=kind|eq=minikube"`
 	KubernetesVersion Key    `yaml:"kubernetes_version"`
 }
 
 type Provisioner struct {
-	Name string `yaml:"name"`
+	Name string `yaml:"name" validate:"eq=helm"`
 }
 
 type Verifier struct {
-	Name string `yaml:"name"`
+	Name string `yaml:"name" validate:"eq=helm"`
 }
 
 func CreateConfiguration(path string, scenario string, configuration ParticleConfiguration) error {

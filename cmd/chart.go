@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"strings"
 
@@ -18,9 +17,8 @@ import (
 func chart(cmd *cobra.Command, args []string) {
 	// TODO add support to manage scenarios
 	var scenario string = "default"
-	var driver string = "kind"
+	var driver string
 	var chartName string = args[0]
-	var supportedDrivers = []string{driver}
 	var lint string = "set -e\nhelm lint"
 	var debug bool
 	var err error
@@ -34,10 +32,6 @@ func chart(cmd *cobra.Command, args []string) {
 
 	driver, err = cmd.Flags().GetString("driver")
 	customError.CheckGenericError(logger, err, true)
-
-	if !helpers.StringInSlice(supportedDrivers, driver) {
-		logger.Error(fmt.Sprintf("\"%s\" is not a valid value for the flag \"driver\"\n", driver))
-	}
 
 	// Check if the chart's directory exists and create it if not
 	_, err = os.Stat(chartName)

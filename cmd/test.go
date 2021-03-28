@@ -33,6 +33,11 @@ func test(cmd *cobra.Command, args []string) { // nolint: funlen
 		"lint":        strings.Replace(configuration.Lint, "\n", " && ", -1),
 	}).Debug("Configuration to use")
 
+	logger.Info("Syntax")
+
+	err = cli.Syntax(scenario, configuration, logger)
+	customError.CheckGenericError(logger, err, true)
+
 	logger.Info("Lint")
 
 	err = cli.Lint(scenario, configuration, logger)
