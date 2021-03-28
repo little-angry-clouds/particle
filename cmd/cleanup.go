@@ -8,6 +8,7 @@ import (
 
 	"github.com/little-angry-clouds/particle/internal/cli"
 	"github.com/little-angry-clouds/particle/internal/config"
+	customError "github.com/little-angry-clouds/particle/internal/error"
 	"github.com/little-angry-clouds/particle/internal/helpers"
 )
 
@@ -25,7 +26,7 @@ func cleanup(cmd *cobra.Command, args []string) {
 	logger.Info("Begin cleanup")
 
 	configuration, err = config.ReadConfiguration(scenario)
-	helpers.CheckGenericError(logger, err)
+	customError.CheckGenericError(logger, err, true)
 
 	logger.WithFields(log.Fields{
 		"driver":      configuration.Driver.Name,
@@ -34,9 +35,8 @@ func cleanup(cmd *cobra.Command, args []string) {
 		"lint":        strings.Replace(configuration.Lint, "\n", " && ", -1),
 	}).Debug("Configuration to use")
 
-	err = cli.Cleanup(scenario, configuration)
-	helpers.CheckGenericError(logger, err)
 	err = cli.Cleanup(scenario, configuration, logger)
+	customError.CheckGenericError(logger, err, true)
 
 	logger.Info("Cleanup finished")
 }

@@ -11,6 +11,7 @@ import (
 	"helm.sh/helm/v3/pkg/chartutil"
 
 	"github.com/little-angry-clouds/particle/internal/config"
+	customError "github.com/little-angry-clouds/particle/internal/error"
 	"github.com/little-angry-clouds/particle/internal/helpers"
 )
 
@@ -32,7 +33,7 @@ func chart(cmd *cobra.Command, args []string) {
 	logger.Info("Begin initialization")
 
 	driver, err = cmd.Flags().GetString("driver")
-	helpers.CheckGenericError(logger, err)
+	customError.CheckGenericError(logger, err, true)
 
 	if !helpers.StringInSlice(supportedDrivers, driver) {
 		logger.Error(fmt.Sprintf("\"%s\" is not a valid value for the flag \"driver\"\n", driver))
@@ -42,16 +43,16 @@ func chart(cmd *cobra.Command, args []string) {
 	_, err = os.Stat(chartName)
 	if !os.IsNotExist(err) {
 		err = errors.New("Chart already exists")
-		helpers.CheckGenericError(logger, err)
+		customError.CheckGenericError(logger, err, true)
 	}
 
 	err = os.MkdirAll(chartName, 0755)
-	helpers.CheckGenericError(logger, err)
+	customError.CheckGenericError(logger, err, true)
 
 	// Create chart
 	if _, err = chartutil.Create(chartName, ""); err != nil {
 		err = errors.New("Could not create chart")
-		helpers.CheckGenericError(logger, err)
+		customError.CheckGenericError(logger, err, true)
 	}
 
 	configuration.Driver.Name = driver
@@ -67,7 +68,7 @@ func chart(cmd *cobra.Command, args []string) {
 	}).Debug("Configuration to create")
 
 	err = config.CreateConfiguration(chartName, scenario, configuration)
-	helpers.CheckGenericError(logger, err)
+	customError.CheckGenericError(logger, err, true)
 
 	logger.Info("Initialization finished")
 }

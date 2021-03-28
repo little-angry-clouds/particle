@@ -9,7 +9,7 @@ import (
 	"github.com/little-angry-clouds/particle/internal/cmd"
 )
 
-type Helm struct{
+type Helm struct {
 	Logger *log.Entry
 }
 

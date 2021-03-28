@@ -8,6 +8,7 @@ import (
 
 	"github.com/little-angry-clouds/particle/internal/cli"
 	"github.com/little-angry-clouds/particle/internal/config"
+	customError "github.com/little-angry-clouds/particle/internal/error"
 	"github.com/little-angry-clouds/particle/internal/helpers"
 )
 
@@ -22,10 +23,8 @@ func test(cmd *cobra.Command, args []string) { // nolint: funlen
 
 	logger := helpers.GetLogger(debug)
 
-	logger.Info("Begin test")
-
 	configuration, err = config.ReadConfiguration(scenario)
-	helpers.CheckGenericError(logger, err)
+	customError.CheckGenericError(logger, err, true)
 
 	logger.WithFields(log.Fields{
 		"driver":      configuration.Driver.Name,
@@ -34,55 +33,45 @@ func test(cmd *cobra.Command, args []string) { // nolint: funlen
 		"lint":        strings.Replace(configuration.Lint, "\n", " && ", -1),
 	}).Debug("Configuration to use")
 
-	logger.Info("Begin lint")
+	logger.Info("Lint")
 
-	err = cli.Lint(scenario, configuration)
-	helpers.CheckGenericError(logger, err)
 	err = cli.Lint(scenario, configuration, logger)
+	customError.CheckGenericError(logger, err, true)
 
 	logger.Info("Cleanup")
 
-	err = cli.Cleanup(scenario, configuration)
-	helpers.CheckGenericError(logger, err)
 	err = cli.Cleanup(scenario, configuration, logger)
+	customError.CheckGenericError(logger, err, true)
 
 	logger.Info("Destroy")
 
-	err = cli.Destroy(scenario, configuration)
-	helpers.CheckGenericError(logger, err)
 	err = cli.Destroy(scenario, configuration, logger)
+	customError.CheckGenericError(logger, err, true)
 
 	logger.Info("Create")
 
-	err = cli.Create(scenario, configuration)
-	helpers.CheckGenericError(logger, err)
 	err = cli.Create(scenario, configuration, logger)
+	customError.CheckGenericError(logger, err, true)
 
 	logger.Info("Converge")
 
-	err = cli.Converge(scenario, configuration)
-	helpers.CheckGenericError(logger, err)
 	err = cli.Converge(scenario, configuration, logger)
+	customError.CheckGenericError(logger, err, true)
 
-	logger.Info("Converge")
+	logger.Info("Verify")
 
-	err = cli.Verify(scenario, configuration)
-	helpers.CheckGenericError(logger, err)
 	err = cli.Verify(scenario, configuration, logger)
+	customError.CheckGenericError(logger, err, true)
 
 	logger.Info("Cleanup")
 
-	err = cli.Cleanup(scenario, configuration)
-	helpers.CheckGenericError(logger, err)
 	err = cli.Cleanup(scenario, configuration, logger)
+	customError.CheckGenericError(logger, err, true)
 
 	logger.Info("Destroy")
 
-	err = cli.Destroy(scenario, configuration)
-	helpers.CheckGenericError(logger, err)
-
-	logger.Info("Test finished")
 	err = cli.Destroy(scenario, configuration, logger)
+	customError.CheckGenericError(logger, err, true)
 }
 
 // cleanupCmd represents the cleanup command

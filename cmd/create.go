@@ -8,6 +8,7 @@ import (
 
 	"github.com/little-angry-clouds/particle/internal/cli"
 	"github.com/little-angry-clouds/particle/internal/config"
+	customError "github.com/little-angry-clouds/particle/internal/error"
 	"github.com/little-angry-clouds/particle/internal/helpers"
 )
 
@@ -25,7 +26,7 @@ func create(cmd *cobra.Command, args []string) {
 	logger.Info("Begin create")
 
 	configuration, err = config.ReadConfiguration(scenario)
-	helpers.CheckGenericError(logger, err)
+	customError.CheckGenericError(logger, err, true)
 
 	logger.WithFields(log.Fields{
 		"driver":      configuration.Driver.Name,
@@ -34,9 +35,8 @@ func create(cmd *cobra.Command, args []string) {
 		"lint":        strings.Replace(configuration.Lint, "\n", " && ", -1),
 	}).Debug("Configuration to use")
 
-	err = cli.Create(scenario, configuration)
-	helpers.CheckGenericError(logger, err)
 	err = cli.Create(scenario, configuration, logger)
+	customError.CheckGenericError(logger, err, true)
 
 	logger.Info("Create finished")
 }
