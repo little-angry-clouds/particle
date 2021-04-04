@@ -38,6 +38,11 @@ func test(cmd *cobra.Command, args []string) { // nolint: funlen
 	err = cli.Syntax(scenario, configuration, logger)
 	customError.CheckGenericError(logger, err)
 
+	logger.Info("Dependency")
+
+	err = cli.Dependency(scenario, configuration, logger)
+	customError.CheckGenericError(logger, err)
+
 	logger.Info("Lint")
 
 	err = cli.Lint(scenario, configuration, logger)
