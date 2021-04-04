@@ -49,6 +49,7 @@ func chart(cmd *cobra.Command, args []string) {
 	configuration.Provisioner.Name = helm
 	configuration.Lint = lint
 	configuration.Verifier.Name = helm
+	configuration.Dependency.Name = helm
 
 	logger.WithFields(log.Fields{
 		"driver":      driver,

@@ -16,6 +16,7 @@ type ParticleConfiguration struct {
 	Provisioner Provisioner `yaml:"provisioner" validate:"required"`
 	Lint        string      `yaml:"lint" validate:"required"`
 	Verifier    Verifier    `yaml:"verifier" validate:"required,eq=helm"`
+	Dependency  Dependency  `yaml:"dependency" validate:"required,eq=helm"`
 }
 
 type Driver struct {
@@ -31,6 +32,15 @@ type Verifier struct {
 	Name string `yaml:"name" validate:"eq=helm"`
 }
 
+type Dependency struct {
+	Name   string         `yaml:"name" validate:"eq=helm"`
+	Charts []Dependencies `yaml:"charts,omitempty"`
+}
+
+type Dependencies struct {
+	RepositoryName string `yaml:"repository-name,omitempty"`
+	RepositoryURL  string `yaml:"repository-url,omitempty"`
+}
 func CreateConfiguration(path string, scenario string, configuration ParticleConfiguration) error {
 	var configDirPath string = path + "/particle/" + scenario + "/"
 	var configFilePath string = configDirPath + "particle.yml"

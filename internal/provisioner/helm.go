@@ -33,6 +33,41 @@ func (h *Helm) Converge(ctx context.Context, cmd cmd.Cmd) error {
 	}
 
 	err = cmd.Run()
+func (h *Helm) Dependency(ctx context.Context, cmd cmd.Cmd) error {
+	var logger *log.Entry = h.Logger
+	var err error
+	var charts config.Key = "charts"
+	var args []string
+
+	dependencies := ctx.Value(charts)
+
+	// If there's no dependencies, or is set but not a list, just exit
+	if dependencies == nil {
+		return nil
+	} else if _, ok := dependencies.([]config.Dependencies); !ok {
+		return &customError.HelmDependencyType{}
+	}
+
+	for _, dependency := range dependencies.([]config.Dependencies) {
+		args = []string{"helm", "repo", "add", dependency.RepositoryName, dependency.RepositoryURL}
+
+		err = cmd.Initialize(logger, args)
+		if err != nil {
+			return err
+		}
+
+		err = cmd.Run()
+
+		stderr := cmd.GetStderr()
+		if strings.Contains(stderr, "already exists, please specify a different name") {
+			err = &customError.HelmRepoExists{Name: dependency.RepositoryName}
+		}
+
+		err = customError.IsRealError(logger, err)
+		if err != nil {
+			return err
+		}
+	}
 
 	return err
 }
