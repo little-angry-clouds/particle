@@ -26,7 +26,8 @@ type Driver struct {
 }
 
 type Provisioner struct {
-	Name string `yaml:"name" validate:"eq=helm"`
+	Name   string                 `yaml:"name" validate:"eq=helm"`
+	Values map[string]interface{} `yaml:"values,omitempty"`
 }
 
 type Verifier struct {
