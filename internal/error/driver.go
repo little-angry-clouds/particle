@@ -1,7 +1,17 @@
 package error
 
-type ClusterExists struct{}
+import "fmt"
+
+type ClusterExists struct{
+	Name string
+}
 
 func (e *ClusterExists) Error() string {
-	return "cluster already exists"
+	return fmt.Sprintf("cluster '%s' already exists", e.Name)
+}
+
+type KubernetesVersionType struct{}
+
+func (e *KubernetesVersionType) Error() string {
+	return "kubernetes-version has incorrect type, should be string"
 }

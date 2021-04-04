@@ -2,13 +2,14 @@ package driver
 
 import (
 	"context"
-	"errors"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/apex/log"
 	"github.com/little-angry-clouds/particle/internal/cmd"
 	"github.com/little-angry-clouds/particle/internal/config"
+	customError "github.com/little-angry-clouds/particle/internal/error"
 )
 
 type Kind struct {
@@ -37,7 +38,7 @@ func (k *Kind) Create(ctx context.Context, cmd cmd.Cmd) error {
 		if value, ok := version.(config.Key); ok {
 			args = append(args, []string{"--image", "kindest/node:" + string(value)}...)
 		} else {
-			return errors.New("kubernetes_version has incorrect type, should be string")
+			return &customError.KubernetesVersionType{}
 		}
 	}
 
@@ -47,6 +48,13 @@ func (k *Kind) Create(ctx context.Context, cmd cmd.Cmd) error {
 	}
 
 	err = cmd.Run()
+
+	stderr := cmd.GetStderr()
+	if strings.Contains(stderr, "failed to create cluster: node(s) already exist for a cluster with the name") {
+		err = &customError.ClusterExists{Name: name}
+	}
+
+	err = customError.IsRealError(logger, err)
 
 	return err
 }

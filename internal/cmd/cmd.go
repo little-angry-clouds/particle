@@ -9,13 +9,12 @@ import (
 	"strings"
 
 	"github.com/apex/log"
-
-	customError "github.com/little-angry-clouds/particle/internal/error"
 )
 
 type Cmd interface {
 	Initialize(*log.Entry, []string) error
 	Run() error
+	GetStderr() string
 }
 
 type CLI struct {
@@ -25,6 +24,23 @@ type CLI struct {
 	Stderr io.Writer
 	Stdout io.Writer
 	Logger *log.Entry
+	stderrString string
+}
+
+func (c *CLI) Initialize(logger *log.Entry, args []string) error {
+	c.Args = args
+	c.Stderr = os.Stderr
+	c.Stdout = os.Stdout
+	c.Logger = logger
+
+	path, err := exec.LookPath(c.Binary)
+	if err != nil {
+		return err
+	}
+
+	c.Path = path
+
+	return nil
 }
 
 func (c *CLI) Run() error {
@@ -54,23 +70,13 @@ func (c *CLI) Run() error {
 		),
 	)
 
-	err = customError.ManageError(cmd.Run(), stderr.String())
+	err = cmd.Run()
+
+	c.stderrString = stderr.String()
 
 	return err
 }
 
-func (c *CLI) Initialize(logger *log.Entry, args []string) error {
-	c.Args = args
-	c.Stderr = os.Stderr
-	c.Stdout = os.Stdout
-	c.Logger = logger
-
-	path, err := exec.LookPath(c.Binary)
-	if err != nil {
-		return err
-	}
-
-	c.Path = path
-
-	return nil
+func (c *CLI) GetStderr() string {
+	return c.stderrString
 }

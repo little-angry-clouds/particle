@@ -1,11 +1,12 @@
 package config
 
 import (
-	"errors"
 	"io/ioutil"
 	"os"
 
 	"gopkg.in/yaml.v2"
+
+	customError "github.com/little-angry-clouds/particle/internal/error"
 )
 
 type Key string
@@ -38,7 +39,7 @@ func CreateConfiguration(path string, scenario string, configuration ParticleCon
 	// Check if the directory exists
 	_, err = os.Stat(configDirPath)
 	if !os.IsNotExist(err) {
-		return errors.New("particle already initialiazed")
+		return &customError.ParticleAlreadyInitialized{}
 	}
 
 	// Create directory
@@ -77,7 +78,7 @@ func ReadConfiguration(scenario string) (ParticleConfiguration, error) {
 	// Check if the directory exists
 	_, err = os.Stat(configDirPath)
 	if os.IsNotExist(err) {
-		return configuration, errors.New("particle is not initialiazed")
+		return configuration, &customError.ParticleNotInitialized{}
 	}
 
 	// Read the configuration file

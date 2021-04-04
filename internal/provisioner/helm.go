@@ -57,6 +57,14 @@ func (h *Helm) Cleanup(ctx context.Context, cmd cmd.Cmd) error {
 	}
 
 	err = cmd.Run()
+	stderr := cmd.GetStderr()
+	if strings.Contains(stderr, "Release not loaded") {
+		err = &customError.ChartNotInstalled{Name: chart}
+	} else if strings.Contains(stderr, "Kubernetes cluster unreachable: Get \"http://localhost:8080/version?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused") { // nolint:lll
+		err = &customError.ChartCantDelete{Name: chart}
+	}
+
+	err = customError.IsRealError(logger, err)
 
 	return err
 }

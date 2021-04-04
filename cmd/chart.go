@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"errors"
 	"os"
 	"strings"
 
@@ -31,23 +30,20 @@ func chart(cmd *cobra.Command, args []string) {
 	logger.Info("Begin initialization")
 
 	driver, err = cmd.Flags().GetString("driver")
-	customError.CheckGenericError(logger, err, true)
+	customError.CheckGenericError(logger, err)
 
 	// Check if the chart's directory exists and create it if not
 	_, err = os.Stat(chartName)
 	if !os.IsNotExist(err) {
-		err = errors.New("Chart already exists")
-		customError.CheckGenericError(logger, err, true)
+		customError.CheckGenericError(logger, &customError.HelmChartExists{})
 	}
 
 	err = os.MkdirAll(chartName, 0755)
-	customError.CheckGenericError(logger, err, true)
+	customError.CheckGenericError(logger, err)
 
 	// Create chart
-	if _, err = chartutil.Create(chartName, ""); err != nil {
-		err = errors.New("Could not create chart")
-		customError.CheckGenericError(logger, err, true)
-	}
+	_, err = chartutil.Create(chartName, "")
+	customError.CheckGenericError(logger, err)
 
 	configuration.Driver.Name = driver
 	configuration.Provisioner.Name = helm
@@ -62,7 +58,7 @@ func chart(cmd *cobra.Command, args []string) {
 	}).Debug("Configuration to create")
 
 	err = config.CreateConfiguration(chartName, scenario, configuration)
-	customError.CheckGenericError(logger, err, true)
+	customError.CheckGenericError(logger, err)
 
 	logger.Info("Initialization finished")
 }
@@ -73,7 +69,7 @@ var chartCmd = &cobra.Command{
 	Short: "Initialize a helm chart and include default particle directory.",
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
-			return errors.New("missing argument 'CHART_NAME'")
+			return &customError.HelmChartMissingArgument{}
 		}
 		return nil
 	},

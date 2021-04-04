@@ -26,7 +26,7 @@ func verify(cmd *cobra.Command, args []string) {
 	logger.Info("Begin verify")
 
 	configuration, err = config.ReadConfiguration(scenario)
-	customError.CheckGenericError(logger, err, true)
+	customError.CheckGenericError(logger, err)
 
 	logger.WithFields(log.Fields{
 		"driver":      configuration.Driver.Name,
@@ -36,7 +36,7 @@ func verify(cmd *cobra.Command, args []string) {
 	}).Debug("Configuration to use")
 
 	err = cli.Verify(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err, true)
+	customError.CheckGenericError(logger, err)
 
 	logger.Info("Verify finished")
 }

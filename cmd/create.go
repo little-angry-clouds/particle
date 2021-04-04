@@ -26,7 +26,7 @@ func create(cmd *cobra.Command, args []string) {
 	logger.Info("Begin create")
 
 	configuration, err = config.ReadConfiguration(scenario)
-	customError.CheckGenericError(logger, err, true)
+	customError.CheckGenericError(logger, err)
 
 	logger.WithFields(log.Fields{
 		"driver":      configuration.Driver.Name,
@@ -36,7 +36,7 @@ func create(cmd *cobra.Command, args []string) {
 	}).Debug("Configuration to use")
 
 	err = cli.Create(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err, true)
+	customError.CheckGenericError(logger, err)
 
 	logger.Info("Create finished")
 }

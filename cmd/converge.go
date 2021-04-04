@@ -26,7 +26,7 @@ func converge(cmd *cobra.Command, args []string) {
 	logger.Info("Begin converge")
 
 	configuration, err = config.ReadConfiguration(scenario)
-	customError.CheckGenericError(logger, err, true)
+	customError.CheckGenericError(logger, err)
 
 	logger.WithFields(log.Fields{
 		"driver":      configuration.Driver.Name,
@@ -36,7 +36,7 @@ func converge(cmd *cobra.Command, args []string) {
 	}).Debug("Configuration to use")
 
 	err = cli.Converge(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err, true)
+	customError.CheckGenericError(logger, err)
 
 	logger.Info("Converge finished")
 }

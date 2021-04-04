@@ -24,7 +24,7 @@ func test(cmd *cobra.Command, args []string) { // nolint: funlen
 	logger := helpers.GetLogger(debug)
 
 	configuration, err = config.ReadConfiguration(scenario)
-	customError.CheckGenericError(logger, err, true)
+	customError.CheckGenericError(logger, err)
 
 	logger.WithFields(log.Fields{
 		"driver":      configuration.Driver.Name,
@@ -36,47 +36,47 @@ func test(cmd *cobra.Command, args []string) { // nolint: funlen
 	logger.Info("Syntax")
 
 	err = cli.Syntax(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err, true)
+	customError.CheckGenericError(logger, err)
 
 	logger.Info("Lint")
 
 	err = cli.Lint(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err, true)
+	customError.CheckGenericError(logger, err)
 
 	logger.Info("Cleanup")
 
 	err = cli.Cleanup(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err, true)
+	customError.CheckGenericError(logger, err)
 
 	logger.Info("Destroy")
 
 	err = cli.Destroy(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err, true)
+	customError.CheckGenericError(logger, err)
 
 	logger.Info("Create")
 
 	err = cli.Create(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err, true)
+	customError.CheckGenericError(logger, err)
 
 	logger.Info("Converge")
 
 	err = cli.Converge(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err, true)
+	customError.CheckGenericError(logger, err)
 
 	logger.Info("Verify")
 
 	err = cli.Verify(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err, true)
+	customError.CheckGenericError(logger, err)
 
 	logger.Info("Cleanup")
 
 	err = cli.Cleanup(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err, true)
+	customError.CheckGenericError(logger, err)
 
 	logger.Info("Destroy")
 
 	err = cli.Destroy(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err, true)
+	customError.CheckGenericError(logger, err)
 }
 
 // cleanupCmd represents the cleanup command

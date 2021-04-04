@@ -26,7 +26,7 @@ func syntax(cmd *cobra.Command, args []string) {
 	logger.Info("Begin syntax")
 
 	configuration, err = config.ReadConfiguration(scenario)
-	customError.CheckGenericError(logger, err, true)
+	customError.CheckGenericError(logger, err)
 
 	logger.WithFields(log.Fields{
 		"driver":      configuration.Driver.Name,
@@ -36,7 +36,7 @@ func syntax(cmd *cobra.Command, args []string) {
 	}).Debug("Configuration to use")
 
 	err = cli.Syntax(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err, true)
+	customError.CheckGenericError(logger, err)
 
 	logger.Info("Syntax finished")
 }
