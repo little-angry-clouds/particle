@@ -63,6 +63,11 @@ func test(cmd *cobra.Command, args []string) { // nolint: funlen
 	err = cli.Create(scenario, configuration, logger)
 	customError.CheckGenericError(logger, err)
 
+	logger.Info("Prepare")
+
+	err = cli.Prepare(scenario, configuration, logger)
+	customError.CheckGenericError(logger, err)
+
 	logger.Info("Converge")
 
 	err = cli.Converge(scenario, configuration, logger)
