@@ -10,4 +10,5 @@ type Provisioner interface {
 	Converge(context.Context, cmd.Cmd) error
 	Cleanup(context.Context, cmd.Cmd) error
 	Dependency(context.Context, cmd.Cmd) error
+	Prepare(context.Context, cmd.Cmd) error
 }

@@ -9,14 +9,14 @@ import (
 	"github.com/little-angry-clouds/particle/internal/provisioner"
 )
 
-func Cleanup(scenario string, configuration config.ParticleConfiguration, logger *log.Entry) error {
+func Prepare(scenario string, configuration config.ParticleConfiguration, logger *log.Entry) error {
 	var err error
 	var cli cmd.CLI
 	var prv provisioner.Provisioner
 	var ctx context.Context = context.Background()
 	var prepare config.Key = "prepare"
 
-	if configuration.Provisioner.Name == helm {
+	if configuration.Dependency.Name == helm {
 		cli = cmd.CLI{Binary: "helm"}
 		prv = &provisioner.Helm{Logger: logger}
 	}
@@ -24,7 +24,7 @@ func Cleanup(scenario string, configuration config.ParticleConfiguration, logger
 	// Pass variables to context
 	ctx = context.WithValue(ctx, prepare, configuration.Prepare)
 
-	err = prv.Cleanup(ctx, &cli)
+	err = prv.Prepare(ctx, &cli)
 
 	return err
 }
