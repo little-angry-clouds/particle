@@ -36,7 +36,7 @@ func TestCreate(t *testing.T) { // nolint: funlen
 		{"1", config.Key("1.19.0"), nil, nil, nil},
 		{"2", config.Key("1.19.0"), errors.New("initialize error"), errors.New("initialize error"), nil},
 		{"3", config.Key("1.19.0"), errors.New("run error"), nil, errors.New("run error")},
-		{"4", "1.19.1", errors.New("kubernetes_version has incorrect type, should be string"), nil, nil},
+		{"4", "1.19.1", errors.New("kubernetes-version has incorrect type, should be string"), nil, nil},
 	}
 
 	for _, tt := range test {

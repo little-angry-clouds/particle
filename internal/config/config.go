@@ -22,7 +22,7 @@ type ParticleConfiguration struct {
 
 type Driver struct {
 	Name              string `yaml:"name" validate:"required,eq=kind|eq=minikube"`
-	KubernetesVersion Key    `yaml:"kubernetes_version"`
+	KubernetesVersion Key    `yaml:"kubernetes-version,omitempty"`
 }
 
 type Provisioner struct {
