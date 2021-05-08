@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"os"
+	"unicode"
 
 	"github.com/apex/log"
 	"github.com/apex/log/handlers/cli"
@@ -49,4 +50,15 @@ func GetLogger(debug bool) *log.Entry {
 	}
 
 	return &logger
+}
+
+func Capitalize(s string) string {
+	if len(s) == 0 {
+		return s
+	}
+
+	r := []rune(s)
+	r[0] = unicode.ToUpper(r[0])
+
+	return string(r)
 }

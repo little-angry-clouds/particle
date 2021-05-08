@@ -8,7 +8,6 @@ import (
 	"github.com/apex/log"
 	"github.com/little-angry-clouds/particle/internal/cmd"
 	"github.com/little-angry-clouds/particle/internal/config"
-	customError "github.com/little-angry-clouds/particle/internal/error"
 )
 
 type Kind struct {
@@ -44,10 +43,10 @@ func (k *Kind) Create(configuration config.ParticleConfiguration, cmd cmd.Cmd) e
 
 	stderr := cmd.GetStderr()
 	if strings.Contains(stderr, "failed to create cluster: node(s) already exist for a cluster with the name") {
-		err = &customError.ClusterExists{Name: name}
+		err = &clusterExists{Name: name}
 	}
 
-	err = customError.IsRealError(logger, err)
+	err = isRealError(logger, err)
 
 	return err
 }

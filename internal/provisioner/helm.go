@@ -11,7 +11,6 @@ import (
 
 	"github.com/little-angry-clouds/particle/internal/cmd"
 	"github.com/little-angry-clouds/particle/internal/config"
-	customError "github.com/little-angry-clouds/particle/internal/error"
 )
 
 type Helm struct {
@@ -170,19 +169,16 @@ func (h *Helm) helmInstall(logger *log.Entry, cmd cmd.Cmd, chart string, version
 	err = cmd.Run()
 
 	stderr := cmd.GetStderr()
-	if strings.Contains(stderr, "Kubernetes cluster unreachable: Get \"http://localhost:8080/version?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused") { // nolint:lll
-		err = &customError.ChartCantInstall{Name: chart}
+	if strings.Contains(stderr, "Kubernetes cluster unreachable: Get \"http://localhost:8080/version?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused") {
+		err = &chartCantInstall{Name: chart}
 	}
 
-	err = customError.IsRealError(logger, err)
-
-	return err
+	return isRealError(logger, err)
 }
 
 func (h *Helm) helmDelete(cmd cmd.Cmd, chart string) error {
 	var logger *log.Entry = h.Logger
 	var err error
-
 
 	args := []string{"helm", "delete", chart}
 
@@ -193,13 +189,14 @@ func (h *Helm) helmDelete(cmd cmd.Cmd, chart string) error {
 
 	err = cmd.Run()
 	stderr := cmd.GetStderr()
+
 	if strings.Contains(stderr, "Release not loaded") {
-		err = &customError.ChartNotInstalled{Name: chart}
-	} else if strings.Contains(stderr, "Kubernetes cluster unreachable: Get \"http://localhost:8080/version?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused") { // nolint:lll
-		err = &customError.ChartCantDelete{Name: chart}
+		err = &chartNotInstalled{Name: chart}
+	} else if strings.Contains(stderr, "Kubernetes cluster unreachable: Get \"http://localhost:8080/version?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused") {
+		err = &chartCantDelete{Name: chart}
 	}
 
-	err = customError.IsRealError(logger, err)
+	err = isRealError(logger, err)
 
 	return err
 }

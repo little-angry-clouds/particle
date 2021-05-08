@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"errors"
+	"fmt"
 	"os"
 	"strings"
 
@@ -35,7 +37,7 @@ func chart(cmd *cobra.Command, args []string) {
 	// Check if the chart's directory exists and create it if not
 	_, err = os.Stat(chartName)
 	if !os.IsNotExist(err) {
-		customError.CheckGenericError(logger, &customError.HelmChartExists{})
+		customError.CheckGenericError(logger, fmt.Errorf("the helm repository '%s' is already added", chartName))
 	}
 
 	err = os.MkdirAll(chartName, 0755)
@@ -70,7 +72,7 @@ var chartCmd = &cobra.Command{
 	Short: "Initialize a helm chart and include default particle directory.",
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
-			return &customError.HelmChartMissingArgument{}
+			return errors.New("missing argument 'CHART_NAME'")
 		}
 		return nil
 	},
