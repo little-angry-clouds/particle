@@ -12,7 +12,7 @@ import (
 	"github.com/little-angry-clouds/particle/internal/helpers"
 )
 
-func test(cmd *cobra.Command, args []string) { // nolint: funlen
+func test(cmd *cobra.Command, args []string) {
 	// TODO add support to manage scenarios
 	var scenario string = "default"
 	var err error

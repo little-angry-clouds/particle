@@ -18,12 +18,12 @@ type Cmd interface {
 }
 
 type CLI struct {
-	Binary string
-	Path   string
-	Args   []string
-	Stderr io.Writer
-	Stdout io.Writer
-	Logger *log.Entry
+	Binary       string
+	Path         string
+	Args         []string
+	Stderr       io.Writer
+	Stdout       io.Writer
+	Logger       *log.Entry
 	stderrString string
 }
 

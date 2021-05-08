@@ -24,20 +24,16 @@ linters:
     - maligned
     - depguard
     - misspell
-    - lll
     - unparam
     - dogsled
     - nakedret
     - prealloc
     - scopelint
     - gocritic
-    - funlen
     - whitespace
     - wsl
     - goprintffuncname
     - gomnd
-    # - gochecknoinits
-    # - gochecknoglobals
 issues:
   exclude-rules:
     - linters:

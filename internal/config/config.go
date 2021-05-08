@@ -7,14 +7,13 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-
 type ParticleConfiguration struct {
 	Driver      Driver      `yaml:"driver" validate:"required"`
 	Provisioner Provisioner `yaml:"provisioner" validate:"required"`
 	Lint        string      `yaml:"lint" validate:"required"`
 	Verifier    Verifier    `yaml:"verifier" validate:"required,eq=helm"`
 	Dependency  Dependency  `yaml:"dependency" validate:"required,eq=helm"`
-	Prepare     []Prepare     `yaml:"prepare,omitempty"`
+	Prepare     []Prepare   `yaml:"prepare,omitempty"`
 }
 
 type Driver struct {
