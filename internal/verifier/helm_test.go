@@ -1,52 +1,55 @@
 package verifier
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"testing"
 
 	"github.com/apex/log"
+	"github.com/little-angry-clouds/particle/internal/config"
 	"github.com/stretchr/testify/assert"
 )
 
 type FakeCli struct {
-	InitializeError error
-	RunError        error
+	CliError error
+	Stderr   string
 }
 
 func (c *FakeCli) Run() error {
-	return c.RunError
+	return c.CliError
 }
 
 func (c *FakeCli) Initialize(*log.Entry, []string) error {
-	return c.InitializeError
+	return nil
 }
 
-func TestVerify(t *testing.T) { // nolint: funlen
+func (c *FakeCli) GetStderr() string {
+	return c.Stderr
+}
+
+func TestVerify(t *testing.T) {
 	var test = []struct {
-		testName        string
-		expectedError   error
-		runError        error
-		initializeError error
+		testName      string
+		expectedError error
+		cliError      error
 	}{
-		{"1", nil, nil, nil},
-		{"2", errors.New("initialize error"), errors.New("initialize error"), nil},
-		{"3", errors.New("run error"), nil, errors.New("run error")},
+		// Test that the create function works with no error
+		{"1", nil, nil},
+		// Test that unexpected generic error is handled as an error
+		{"2", errors.New("fake error"), errors.New("fake error")},
 	}
 
 	for _, tt := range test {
 		tt := tt
 		t.Run(tt.testName, func(t *testing.T) {
 			var err error
-			var ctx context.Context = context.Background()
 			var vrf Helm = Helm{}
 			var cli FakeCli = FakeCli{
-				InitializeError: tt.initializeError,
-				RunError:        tt.runError,
+				CliError: tt.cliError,
 			}
+			var configuration config.ParticleConfiguration
 
-			err = vrf.Verify(ctx, &cli)
+			err = vrf.Verify(configuration, &cli)
 			t.Log(fmt.Sprintf("error: %s", err))
 
 			assert.Equal(t, err, tt.expectedError)

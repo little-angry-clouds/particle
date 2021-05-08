@@ -1,7 +1,6 @@
 package driver
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"testing"
@@ -9,85 +8,107 @@ import (
 	"github.com/apex/log"
 
 	"github.com/little-angry-clouds/particle/internal/config"
+	"github.com/little-angry-clouds/particle/internal/helpers"
 	"github.com/stretchr/testify/assert"
 )
 
 type FakeCli struct {
-	InitializeError error
-	RunError        error
+	CliError error
+	Stderr   string
 }
 
 func (c *FakeCli) Run() error {
-	return c.RunError
+	return c.CliError
 }
 
 func (c *FakeCli) Initialize(*log.Entry, []string) error {
-	return c.InitializeError
+	return nil
 }
 
-func TestCreate(t *testing.T) { // nolint: funlen
+func (c *FakeCli) GetStderr() string {
+	return c.Stderr
+}
+
+func TestCreate(t *testing.T) {
 	var test = []struct {
-		testName        string
-		k8sVersion      interface{}
-		expectedError   error
-		runError        error
-		initializeError error
+		testName      string
+		expectedError error
+		cliError      error
+		stdErr        string
+		k8sVersion    string
 	}{
-		{"1", config.Key("1.19.0"), nil, nil, nil},
-		{"2", config.Key("1.19.0"), errors.New("initialize error"), errors.New("initialize error"), nil},
-		{"3", config.Key("1.19.0"), errors.New("run error"), nil, errors.New("run error")},
-		{"4", "1.19.1", errors.New("kubernetes-version has incorrect type, should be string"), nil, nil},
+		// Test that the create function works with no error
+		{"1", nil, nil, "", ""},
+		// Test that the create function works with no error
+		{"1", nil, nil, "", "1.19.0"},
+		// Test that unexpected generic error is handled as an error
+		{"2",
+			// expectedError
+			errors.New("fake error"),
+			// cliError
+			errors.New("fake error"),
+			// stdErr
+			"",
+			// k8sVersion
+			"",
+		},
+		// Test that clusterExists error is not handled as an error
+		{"3",
+			// expectedError
+			nil,
+			// cliError
+			nil,
+			// stdErr
+			"failed to create cluster: node(s) already exist for a cluster with the name",
+			// k8sVersion
+			"",
+		},
 	}
 
 	for _, tt := range test {
 		tt := tt
 		t.Run(tt.testName, func(t *testing.T) {
 			var err error
-			var ctx context.Context = context.Background()
-			var drv Kind = Kind{}
+			var drv Kind = Kind{Logger: helpers.GetLogger(false)}
 			var cli FakeCli = FakeCli{
-				InitializeError: tt.initializeError,
-				RunError:        tt.runError,
+				CliError: tt.cliError,
+				Stderr:   tt.stdErr,
 			}
-			var kubernetesVersion config.Key = "kubernetesVersion"
+			var configuration config.ParticleConfiguration
 
-			if tt.k8sVersion != "" {
-				ctx = context.WithValue(ctx, kubernetesVersion, tt.k8sVersion)
-			}
-
-			err = drv.Create(ctx, &cli)
+			configuration.Driver.KubernetesVersion = tt.k8sVersion
+			err = drv.Create(configuration, &cli)
 			t.Log(fmt.Sprintf("error: %s", err))
-			t.Log(fmt.Sprintf("ctx value: %s", ctx.Value(kubernetesVersion)))
+			t.Log(fmt.Sprintf("config value: %s", configuration))
 
 			assert.Equal(t, err, tt.expectedError)
 		})
 	}
 }
 
-func TestDestroy(t *testing.T) { // nolint: funlen
+func TestDestroy(t *testing.T) {
 	var test = []struct {
-		testName        string
-		expectedError   error
-		runError        error
-		initializeError error
+		testName      string
+		expectedError error
+		cliError      error
 	}{
-		{"1", nil, nil, nil},
-		{"2", errors.New("fake error"), errors.New("fake error"), nil},
-		{"3", errors.New("fake error"), nil, errors.New("fake error")},
+		// Test that the create function works with no error
+		{"1", nil, nil},
+		// Test that unexpected generic error is handled as an error
+		{"2", errors.New("fake error"), errors.New("fake error")},
 	}
 
 	for _, tt := range test {
 		tt := tt
 		t.Run(tt.testName, func(t *testing.T) {
 			var err error
-			var ctx context.Context = context.Background()
 			var drv Kind = Kind{}
 			var cli FakeCli = FakeCli{
-				InitializeError: tt.initializeError,
-				RunError:        tt.runError,
+				CliError: tt.cliError,
 			}
+			var configuration config.ParticleConfiguration
 
-			err = drv.Destroy(ctx, &cli)
+			err = drv.Destroy(configuration, &cli)
 			t.Log(fmt.Sprintf("error: %s", err))
 
 			assert.Equal(t, err, tt.expectedError)
