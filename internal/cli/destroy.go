@@ -1,8 +1,6 @@
 package cli
 
 import (
-	"context"
-
 	"github.com/apex/log"
 	"github.com/little-angry-clouds/particle/internal/cmd"
 	"github.com/little-angry-clouds/particle/internal/config"
@@ -13,14 +11,13 @@ func Destroy(scenario string, configuration config.ParticleConfiguration, logger
 	var err error
 	var cli cmd.CLI
 	var drv driver.Driver
-	var ctx context.Context = context.Background()
 
 	if configuration.Driver.Name == "kind" {
 		cli = cmd.CLI{Binary: "kind"}
 		drv = &driver.Kind{Logger: logger}
 	}
 
-	err = drv.Destroy(ctx, &cli)
+	err = drv.Destroy(configuration, &cli)
 
 	return err
 }

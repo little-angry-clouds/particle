@@ -1,7 +1,6 @@
 package driver
 
 import (
-	"context"
 	"os"
 	"path/filepath"
 	"strings"
@@ -16,9 +15,9 @@ type Kind struct {
 	Logger *log.Entry
 }
 
-func (k *Kind) Create(ctx context.Context, cmd cmd.Cmd) error {
+func (k *Kind) Create(configuration config.ParticleConfiguration, cmd cmd.Cmd) error {
 	var logger *log.Entry = k.Logger
-	var kubernetesVersion config.Key = "kubernetesVersion"
+	var kubernetesVersion string = configuration.Driver.KubernetesVersion
 	var err error
 	var name string
 
@@ -32,14 +31,8 @@ func (k *Kind) Create(ctx context.Context, cmd cmd.Cmd) error {
 	args := []string{"kind", "create", "cluster", "--wait", "1m", "--name", name}
 
 	// Check if k8s version is set
-	version := ctx.Value(kubernetesVersion)
-	if version != nil {
-		// If k8s version is set, check it's a string
-		if value, ok := version.(config.Key); ok {
-			args = append(args, []string{"--image", "kindest/node:" + string(value)}...)
-		} else {
-			return &customError.KubernetesVersionType{}
-		}
+	if kubernetesVersion != "" {
+		args = append(args, []string{"--image", "kindest/node:" + kubernetesVersion}...)
 	}
 
 	err = cmd.Initialize(logger, args)
@@ -59,7 +52,7 @@ func (k *Kind) Create(ctx context.Context, cmd cmd.Cmd) error {
 	return err
 }
 
-func (k *Kind) Destroy(ctx context.Context, cmd cmd.Cmd) error {
+func (k *Kind) Destroy(configuration config.ParticleConfiguration, cmd cmd.Cmd) error {
 	var logger *log.Entry = k.Logger
 	var err error
 	var name string

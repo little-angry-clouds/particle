@@ -1,8 +1,6 @@
 package cli
 
 import (
-	"context"
-
 	"github.com/apex/log"
 	"github.com/little-angry-clouds/particle/internal/cmd"
 	"github.com/little-angry-clouds/particle/internal/config"
@@ -13,18 +11,13 @@ func Cleanup(scenario string, configuration config.ParticleConfiguration, logger
 	var err error
 	var cli cmd.CLI
 	var prv provisioner.Provisioner
-	var ctx context.Context = context.Background()
-	var prepare config.Key = "prepare"
 
 	if configuration.Provisioner.Name == helm {
 		cli = cmd.CLI{Binary: "helm"}
 		prv = &provisioner.Helm{Logger: logger}
 	}
 
-	// Pass variables to context
-	ctx = context.WithValue(ctx, prepare, configuration.Prepare)
-
-	err = prv.Cleanup(ctx, &cli)
+	err = prv.Cleanup(configuration, &cli)
 
 	return err
 }

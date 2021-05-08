@@ -1,19 +1,19 @@
 package verifier
 
 import (
-	"context"
 	"os"
 	"path/filepath"
 
 	"github.com/apex/log"
 	"github.com/little-angry-clouds/particle/internal/cmd"
+	"github.com/little-angry-clouds/particle/internal/config"
 )
 
 type Helm struct {
 	Logger *log.Entry
 }
 
-func (h *Helm) Verify(ctx context.Context, cmd cmd.Cmd) error {
+func (h *Helm) Verify(configuration config.ParticleConfiguration, cmd cmd.Cmd) error {
 	var logger *log.Entry = h.Logger
 	var err error
 	var name string

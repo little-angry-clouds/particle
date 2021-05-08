@@ -1,12 +1,11 @@
 package driver
 
 import (
-	"context"
-
 	"github.com/little-angry-clouds/particle/internal/cmd"
+	"github.com/little-angry-clouds/particle/internal/config"
 )
 
 type Driver interface {
-	Create(context.Context, cmd.Cmd) error
-	Destroy(context.Context, cmd.Cmd) error
+	Create(config.ParticleConfiguration, cmd.Cmd) error
+	Destroy(config.ParticleConfiguration, cmd.Cmd) error
 }

@@ -1,11 +1,10 @@
 package verifier
 
 import (
-	"context"
-
 	"github.com/little-angry-clouds/particle/internal/cmd"
+	"github.com/little-angry-clouds/particle/internal/config"
 )
 
 type Verifier interface {
-	Verify(context.Context, cmd.Cmd) error
+	Verify(config.ParticleConfiguration, cmd.Cmd) error
 }

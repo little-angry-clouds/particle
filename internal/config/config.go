@@ -5,11 +5,8 @@ import (
 	"os"
 
 	"gopkg.in/yaml.v2"
-
-	customError "github.com/little-angry-clouds/particle/internal/error"
 )
 
-type Key string
 
 type ParticleConfiguration struct {
 	Driver      Driver      `yaml:"driver" validate:"required"`
@@ -22,7 +19,7 @@ type ParticleConfiguration struct {
 
 type Driver struct {
 	Name              string `yaml:"name" validate:"required,eq=kind|eq=minikube"`
-	KubernetesVersion Key    `yaml:"kubernetes-version,omitempty"`
+	KubernetesVersion string `yaml:"kubernetes-version,omitempty"`
 }
 
 type Provisioner struct {
@@ -58,7 +55,7 @@ func CreateConfiguration(path string, scenario string, configuration ParticleCon
 	// Check if the directory exists
 	_, err = os.Stat(configDirPath)
 	if !os.IsNotExist(err) {
-		return &customError.ParticleAlreadyInitialized{}
+		return &particleAlreadyInitialized{}
 	}
 
 	// Create directory
@@ -97,7 +94,7 @@ func ReadConfiguration(scenario string) (ParticleConfiguration, error) {
 	// Check if the directory exists
 	_, err = os.Stat(configDirPath)
 	if os.IsNotExist(err) {
-		return configuration, &customError.ParticleNotInitialized{}
+		return configuration, &particleNotInitialized{}
 	}
 
 	// Read the configuration file
