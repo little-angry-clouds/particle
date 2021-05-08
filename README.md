@@ -1,2 +1,2 @@
-# particle
-<a href='https://github.com/jpoles1/gopherbadger' target='_blank'>![gopherbadger-tag-do-not-edit](https://img.shields.io/badge/Go%20Coverage-82%25-brightgreen.svg?longCache=true&style=flat)</a>
+# Particle
+[![License](https://img.shields.io/github/license/little-angry-clouds/particle.svg)](https://github.com/little-angry-clouds/particle/blob/master/LICENSE) [![Go Report Card](https://goreportcard.com/badge/github.com/little-angry-clouds/particle)](https://goreportcard.com/report/github.com/little-angry-clouds/particle) <a href='https://github.com/jpoles1/gopherbadger' target='_blank'>![gopherbadger-tag-do-not-edit](https://img.shields.io/badge/Go%20Coverage-82%25-brightgreen.svg?longCache=true&style=flat)</a>
