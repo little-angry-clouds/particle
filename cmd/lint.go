@@ -13,15 +13,14 @@ import (
 )
 
 func lint(cmd *cobra.Command, args []string) {
-	// TODO add support to manage scenarios
-	var scenario string = "default"
+	var scenario string
 	var err error
 	var configuration config.ParticleConfiguration
 	var debug bool
 
 	debug, _ = cmd.Flags().GetBool("debug")
-
 	logger := helpers.GetLogger(debug)
+	scenario, _ = cmd.Flags().GetString("scenario")
 
 	logger.Info("Begin linting")
 
