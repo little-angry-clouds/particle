@@ -18,7 +18,7 @@ func Syntax(scenario string, configuration config.ParticleConfiguration, logger 
 
 	v := validator.New()
 
-	// Translate the error to something that os more or less intelligible
+	// Translate the error to something that is more or less intelligible
 	translator := en.New()
 	uni := ut.New(translator, translator)
 	trans, _ := uni.GetTranslator("en")
