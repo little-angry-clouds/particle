@@ -11,6 +11,7 @@ import (
 
 	"github.com/little-angry-clouds/particle/internal/cmd"
 	"github.com/little-angry-clouds/particle/internal/config"
+	customError "github.com/little-angry-clouds/particle/internal/error"
 )
 
 type Helm struct {
@@ -86,6 +87,8 @@ func (h *Helm) Dependency(configuration config.ParticleConfiguration, cmd cmd.Cm
 		stderr := cmd.GetStderr()
 		if strings.Contains(stderr, "already exists, please specify a different name") {
 			err = &helmRepoExists{Name: dependency.RepositoryName}
+		} else if strings.Contains(stderr, "exit status 1") {
+			err = customError.FormatGenericGolangOutput(stderr)
 		}
 
 		err = isRealError(logger, err)
@@ -171,6 +174,8 @@ func (h *Helm) helmInstall(logger *log.Entry, cmd cmd.Cmd, chart string, version
 	stderr := cmd.GetStderr()
 	if strings.Contains(stderr, "Kubernetes cluster unreachable: Get \"http://localhost:8080/version?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused") {
 		err = &chartCantInstall{Name: chart}
+	} else if strings.Contains(stderr, "exit status 1") {
+		err = customError.FormatGenericGolangOutput(stderr)
 	}
 
 	return isRealError(logger, err)
@@ -188,12 +193,16 @@ func (h *Helm) helmDelete(cmd cmd.Cmd, chart string) error {
 	}
 
 	err = cmd.Run()
+
 	stderr := cmd.GetStderr()
 
-	if strings.Contains(stderr, "Release not loaded") {
+	switch {
+	case strings.Contains(stderr, "Release not loaded"):
 		err = &chartNotInstalled{Name: chart}
-	} else if strings.Contains(stderr, "Kubernetes cluster unreachable: Get \"http://localhost:8080/version?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused") {
+	case strings.Contains(stderr, "Kubernetes cluster unreachable: Get \"http://localhost:8080/version?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused"):
 		err = &chartCantDelete{Name: chart}
+	case strings.Contains(stderr, "exit status 1"):
+		err = customError.FormatGenericGolangOutput(stderr)
 	}
 
 	err = isRealError(logger, err)
