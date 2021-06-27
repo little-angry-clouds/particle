@@ -43,7 +43,7 @@ func create(cmd *cobra.Command, args []string) {
 // createCmd represents the create command
 var createCmd = &cobra.Command{
 	Use:   "create",
-	Short: "Use the provisioner to start the instances",
+	Short: "Creates the kubernetes cluster",
 	Run:   create,
 }
 

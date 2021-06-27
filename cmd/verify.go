@@ -43,7 +43,7 @@ func verify(cmd *cobra.Command, args []string) {
 // verifyCmd represents the verify command
 var verifyCmd = &cobra.Command{
 	Use:   "verify",
-	Short: "Verify that the state is what we want",
+	Short: "Executes the tests",
 	Run:   verify,
 }
 

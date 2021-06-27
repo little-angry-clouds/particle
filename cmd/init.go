@@ -7,7 +7,7 @@ import (
 // initCmd represents the init command
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "Initialize the code and include default particle directory.",
+	Short: "Initializes the manifests and includes the default particle directory",
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
 			_ = cmd.Help()

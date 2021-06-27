@@ -91,7 +91,7 @@ func test(cmd *cobra.Command, args []string) {
 // cleanupCmd represents the cleanup command
 var testCmd = &cobra.Command{
 	Use:   "test",
-	Short: "Execute the full matrix of actions",
+	Short: "Executes the full matrix of actions",
 	Run:   test,
 }
 

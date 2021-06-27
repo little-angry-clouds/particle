@@ -43,7 +43,7 @@ func syntax(cmd *cobra.Command, args []string) {
 // syntaxCmd represents the syntax command
 var syntaxCmd = &cobra.Command{
 	Use:   "syntax",
-	Short: "Checks that the particle configuration is correct.",
+	Short: "Checks that the particle configuration is correct",
 	Run:   syntax,
 }
 

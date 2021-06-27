@@ -43,7 +43,7 @@ func cleanup(cmd *cobra.Command, args []string) {
 // cleanupCmd represents the cleanup command
 var cleanupCmd = &cobra.Command{
 	Use:   "cleanup",
-	Short: "A brief description of your command",
+	Short: "Uninstalls any manifest that is in the cluster",
 	Run:   cleanup,
 }
 

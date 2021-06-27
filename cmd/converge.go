@@ -43,7 +43,7 @@ func converge(cmd *cobra.Command, args []string) {
 // convergeCmd represents the converge command
 var convergeCmd = &cobra.Command{
 	Use:   "converge",
-	Short: "Converge will execute the sequence necessary to converge the instances",
+	Short: "Installs the main manifests to the cluster",
 	Run:   converge,
 }
 

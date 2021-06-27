@@ -68,7 +68,7 @@ func chart(cmd *cobra.Command, args []string) {
 // chartCmd represents the chart command
 var chartCmd = &cobra.Command{
 	Use:   "chart",
-	Short: "Initialize a helm chart and include default particle directory.",
+	Short: "Initializes a helm chart and includes default particle directory",
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
 			return errors.New("missing argument 'CHART_NAME'")

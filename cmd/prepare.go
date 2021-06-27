@@ -42,7 +42,7 @@ func prepare(cmd *cobra.Command, args []string) {
 // prepareCmd represents the prepare command
 var prepareCmd = &cobra.Command{
 	Use:   "prepare",
-	Short: "Installs what is needed before converging",
+	Short: "Installs the dependencies",
 	Run:   prepare,
 }
 

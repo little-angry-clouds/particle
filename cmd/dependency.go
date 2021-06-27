@@ -42,7 +42,7 @@ func dependency(cmd *cobra.Command, args []string) {
 // dependencyCmd represents the dependency command
 var dependencyCmd = &cobra.Command{
 	Use:   "dependency",
-	Short: "Installs dependencies",
+	Short: "Executes the steps that the dependencies need to work",
 	Run:   dependency,
 }
 

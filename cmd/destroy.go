@@ -43,7 +43,7 @@ func destroy(cmd *cobra.Command, args []string) {
 // destroyCmd represents the destroy command
 var destroyCmd = &cobra.Command{
 	Use:   "destroy",
-	Short: "Use the provisioner to destroy the instances",
+	Short: "Destroy the kubernetes cluster",
 	Run:   destroy,
 }
 

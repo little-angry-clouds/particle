@@ -43,7 +43,7 @@ func lint(cmd *cobra.Command, args []string) {
 // lintCmd represents the lint command
 var lintCmd = &cobra.Command{
 	Use:   "lint",
-	Short: "Lint executes external linters",
+	Short: "Executes arbitrary linters",
 	Run:   lint,
 }
 
