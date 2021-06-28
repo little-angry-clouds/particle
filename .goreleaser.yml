@@ -27,6 +27,8 @@ changelog:
       - '^docs:'
       - '^test:'
       - '^ci:'
+      - '^style:'
+      - '^build:'
 release:
   github:
     owner: little-angry-clouds
@@ -37,7 +39,7 @@ brews:
     tap:
       owner: little-angry-clouds
       name: homebrew-my-brews
-    url_template: "https://github.com/little-angry-clouds/homebrew-my-brews{{ .Tag }}/{{ .ArtifactName }}"
+    url_template: "https://github.com/little-angry-clouds/homebrew-my-brews/{{ .Tag }}/{{ .ArtifactName }}"
     commit_author:
       name: goreleaserbot
       email: goreleaser@carlosbecker.com
