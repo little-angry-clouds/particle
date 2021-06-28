@@ -6,24 +6,27 @@ $(BIN)/golangci-lint: | $(BIN)
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.24.0
 $(BIN)/gopherbadger: | $(BIN)
 	GOBIN=$(BIN) go get github.com/jpoles1/gopherbadger
+$(BIN)/goreleaser: | $(BIN)
+	curl -sfL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
 
 # Binaries to install
 GOLANGCI-LINT = $(BIN)/golangci-lint
 GOPHERBADGER = $(BIN)/gopherbadger
+GORELEASER = $(BIN)/goreleaser
 
 ###############################################################################
 ###############################################################################
 ###############################################################################
 
-all: clean static test build
+all: clean static unit build
 
 # Build binaries
-build:
-	go build -a -o bin/particle main.go;
+build: | $(GORELEASER)
+	$(GORELEASER) build --rm-dist --skip-validate
 
 clean:
-	-rm -r bin/
-	-rm -r releases/
+	rm -r bin/
+	rm -r dist/
 
 static: | $(GOLANGCI-LINT) $(GOPHERBADGER)
 	$(GOLANGCI-LINT) run ./... --fix
@@ -32,12 +35,5 @@ static: | $(GOLANGCI-LINT) $(GOPHERBADGER)
 unit:
 	go test ./... -cover
 
-PLATFORMS := linux-amd64 linux-386 darwin-amd64 windows-amd64 windows-386
-temp = $(subst -, ,$@)
-os = $(word 1, $(temp))
-arch = $(word 2, $(temp))
-releases: $(PLATFORMS)
-$(PLATFORMS):
-	@mkdir -p releases; \
-	CGO_ENABLED=0 GOOS=$(os) GOARCH=$(arch) go build -a -o bin/particle-$(os)-$(arch) main.go; \
-	tar -C bin -cvzf releases/particle-$(os)-$(arch).tar.gz particle-$(os)-$(arch) particle-$(os)-$(arch); \
+releases:
+	$(GORELEASER) release

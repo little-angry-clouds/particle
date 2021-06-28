@@ -1,0 +1,57 @@
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+    ldflags:
+      - -s -w
+      - -X github.com/little-angry-clouds/particle/cmd.Version={{.Version}}
+      - -X github.com/little-angry-clouds/particle/cmd.Commit={{.Commit}}
+      - -X github.com/little-angry-clouds/particle/cmd.Date={{.Date}}
+    goarch:
+      - amd64
+      - arm
+      - arm64
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ .Tag }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^ci:'
+release:
+  github:
+    owner: little-angry-clouds
+    name: particle
+  draft: true
+brews:
+  - name: particle
+    tap:
+      owner: little-angry-clouds
+      name: homebrew-my-brews
+    url_template: "https://github.com/little-angry-clouds/homebrew-my-brews{{ .Tag }}/{{ .ArtifactName }}"
+    commit_author:
+      name: goreleaserbot
+      email: goreleaser@carlosbecker.com
+    folder: Formula
+    homepage: https://github.com/little-angry-clouds/particle/
+    description: Particle is a project designed to aid in the development and testing of Helm charts and other kubernetes manifests.
+    license: "GPL3"
+    dependencies:
+      - name: go
+      - name: helm
+        type: optional
+      - name: kind
+        type: optional
+    install: |
+      ENV.prepend "CGO_ENABLED", "0"
+      system "go", "build", "-a", "-o", "particle.bin", "main.go"
+      bin.install "particle.bin" => "#{bin}/particle"
