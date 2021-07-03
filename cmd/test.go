@@ -35,52 +35,111 @@ func test(cmd *cobra.Command, args []string) {
 	logger.Info("Syntax")
 
 	err = cli.Syntax(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err)
+	if err != nil {
+		logger.WithError(err).Error("An error was detected, exiting")
+		logger.Warn("Destroy")
+		_ = cli.Destroy(scenario, configuration, logger)
+
+		return
+	}
 
 	logger.Info("Dependency")
 
 	err = cli.Dependency(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err)
+	if err != nil {
+		logger.WithError(err).Error("An error was detected, exiting")
+		logger.Warn("Destroy")
+		_ = cli.Destroy(scenario, configuration, logger)
+
+		return
+	}
 
 	logger.Info("Lint")
 
 	err = cli.Lint(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err)
+	if err != nil {
+		logger.WithError(err).Error("An error was detected, exiting")
+		logger.Warn("Destroy")
+		_ = cli.Destroy(scenario, configuration, logger)
+
+		return
+	}
 
 	logger.Info("Cleanup")
 
 	err = cli.Cleanup(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err)
+	if err != nil {
+		logger.WithError(err).Error("An error was detected, exiting")
+		logger.Warn("Destroy")
+		_ = cli.Destroy(scenario, configuration, logger)
+
+		return
+	}
 
 	logger.Info("Destroy")
 
 	err = cli.Destroy(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err)
+	if err != nil {
+		logger.WithError(err).Error("An error was detected, exiting")
+		_ = cli.Destroy(scenario, configuration, logger)
+
+		return
+	}
 
 	logger.Info("Create")
 
 	err = cli.Create(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err)
+	if err != nil {
+		logger.WithError(err).Error("An error was detected, exiting")
+		logger.Warn("Destroy")
+		_ = cli.Destroy(scenario, configuration, logger)
+
+		return
+	}
 
 	logger.Info("Prepare")
 
 	err = cli.Prepare(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err)
+	if err != nil {
+		logger.WithError(err).Error("An error was detected, exiting")
+		logger.Warn("Destroy")
+		_ = cli.Destroy(scenario, configuration, logger)
+
+		return
+	}
 
 	logger.Info("Converge")
 
 	err = cli.Converge(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err)
+	if err != nil {
+		logger.WithError(err).Error("An error was detected, exiting")
+		logger.Warn("Destroy")
+		_ = cli.Destroy(scenario, configuration, logger)
+
+		return
+	}
 
 	logger.Info("Verify")
 
 	err = cli.Verify(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err)
+	if err != nil {
+		logger.WithError(err).Error("An error was detected, exiting")
+		logger.Warn("Destroy")
+		_ = cli.Destroy(scenario, configuration, logger)
+
+		return
+	}
 
 	logger.Info("Cleanup")
 
 	err = cli.Cleanup(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err)
+	if err != nil {
+		logger.WithError(err).Error("An error was detected, exiting")
+		logger.Warn("Destroy")
+		_ = cli.Destroy(scenario, configuration, logger)
+
+		return
+	}
 
 	logger.Info("Destroy")
 
