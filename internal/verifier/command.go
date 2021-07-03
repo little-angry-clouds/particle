@@ -1,31 +1,21 @@
 package verifier
 
 import (
-	"os"
-	"path/filepath"
-
 	"github.com/apex/log"
 	"github.com/little-angry-clouds/particle/internal/cmd"
 	"github.com/little-angry-clouds/particle/internal/config"
 )
 
-type Helm struct {
+type Command struct {
 	Logger *log.Entry
 }
 
-func (h *Helm) Verify(configuration config.ParticleConfiguration, cmd cmd.Cmd) error {
-	var logger *log.Entry = h.Logger
+func (c *Command) Verify(configuration config.ParticleConfiguration, cmd cmd.Cmd) error {
+	var logger *log.Entry = c.Logger
 	var err error
-	var name string
 
-	path, err := os.Getwd()
-	if err != nil {
-		return err
-	}
-
-	name = filepath.Base(path)
-
-	args := []string{"helm", "test", "test-" + name}
+	// args := []string{"helm", "test", "test-" + name}
+	args := configuration.Verifier.Command
 
 	err = cmd.Initialize(logger, args)
 	if err != nil {

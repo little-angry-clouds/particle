@@ -12,10 +12,8 @@ func Verify(scenario string, configuration config.ParticleConfiguration, logger 
 	var cli cmd.CLI
 	var vrf verifier.Verifier
 
-	if configuration.Verifier.Name == "helm" {
-		cli = cmd.CLI{Binary: "helm"}
-		vrf = &verifier.Helm{Logger: logger}
-	}
+	cli = cmd.CLI{Binary: configuration.Verifier.Command[0]}
+	vrf = &verifier.Command{Logger: logger}
 
 	err = vrf.Verify(configuration, &cli)
 

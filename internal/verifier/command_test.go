@@ -27,7 +27,7 @@ func (c *FakeCli) GetStderr() string {
 	return c.Stderr
 }
 
-func TestVerify(t *testing.T) {
+func TestVerifyCommand(t *testing.T) {
 	var test = []struct {
 		testName      string
 		expectedError error
@@ -43,11 +43,14 @@ func TestVerify(t *testing.T) {
 		tt := tt
 		t.Run(tt.testName, func(t *testing.T) {
 			var err error
-			var vrf Helm = Helm{}
+			var vrf Command = Command{}
 			var cli FakeCli = FakeCli{
 				CliError: tt.cliError,
 			}
 			var configuration config.ParticleConfiguration
+
+			configuration.Verifier.Name = "helm"
+			configuration.Verifier.Command = []string{"helm", "test", "test-helm"}
 
 			err = vrf.Verify(configuration, &cli)
 			t.Log(fmt.Sprintf("error: %s", err))

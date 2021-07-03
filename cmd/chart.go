@@ -50,6 +50,7 @@ func chart(cmd *cobra.Command, args []string) {
 	configuration.Provisioner.Name = helm
 	configuration.Lint = lint
 	configuration.Verifier.Name = helm
+	configuration.Verifier.Command = []string{"helm", "test", chartName}
 	configuration.Dependency.Name = helm
 
 	logger.WithFields(log.Fields{

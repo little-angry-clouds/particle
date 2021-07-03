@@ -27,7 +27,8 @@ type Provisioner struct {
 }
 
 type Verifier struct {
-	Name string `yaml:"name" validate:"eq=helm"`
+	Name    string   `yaml:"name" validate:"required"`
+	Command []string `yaml:"command" validate:"required"`
 }
 
 type Dependency struct {
