@@ -49,8 +49,7 @@ func TestVerifyCommand(t *testing.T) {
 			}
 			var configuration config.ParticleConfiguration
 
-			configuration.Verifier.Name = "helm"
-			configuration.Verifier.Command = []string{"helm", "test", "test-helm"}
+			configuration.Verifier = "set -e && helm test example"
 
 			err = vrf.Verify(configuration, &cli)
 			t.Log(fmt.Sprintf("error: %s", err))

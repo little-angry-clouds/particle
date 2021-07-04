@@ -14,8 +14,7 @@ func (c *Command) Verify(configuration config.ParticleConfiguration, cmd cmd.Cmd
 	var logger *log.Entry = c.Logger
 	var err error
 
-	// args := []string{"helm", "test", "test-" + name}
-	args := configuration.Verifier.Command
+	args := []string{"bash", "-c", configuration.Verifier}
 
 	err = cmd.Initialize(logger, args)
 	if err != nil {

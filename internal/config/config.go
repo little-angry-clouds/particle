@@ -11,7 +11,7 @@ type ParticleConfiguration struct {
 	Driver      Driver      `yaml:"driver" validate:"required"`
 	Provisioner Provisioner `yaml:"provisioner" validate:"required"`
 	Lint        string      `yaml:"lint" validate:"required"`
-	Verifier    Verifier    `yaml:"verifier" validate:"required,eq=helm"`
+	Verifier    string      `yaml:"verifier" validate:"required"`
 	Dependency  Dependency  `yaml:"dependency" validate:"required,eq=helm"`
 	Prepare     []Prepare   `yaml:"prepare,omitempty"`
 }
@@ -24,11 +24,6 @@ type Driver struct {
 type Provisioner struct {
 	Name   string                 `yaml:"name" validate:"eq=helm"`
 	Values map[string]interface{} `yaml:"values,omitempty"`
-}
-
-type Verifier struct {
-	Name    string   `yaml:"name" validate:"required"`
-	Command []string `yaml:"command" validate:"required"`
 }
 
 type Dependency struct {

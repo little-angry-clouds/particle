@@ -20,6 +20,7 @@ func chart(cmd *cobra.Command, args []string) {
 	var driver string
 	var chartName string = args[0]
 	var lint string = "set -e\nhelm lint"
+	var verifier string = "set -e\nhelm test " + chartName
 	var debug bool
 	var err error
 	var configuration config.ParticleConfiguration
@@ -49,8 +50,7 @@ func chart(cmd *cobra.Command, args []string) {
 	configuration.Driver.Name = driver
 	configuration.Provisioner.Name = helm
 	configuration.Lint = lint
-	configuration.Verifier.Name = helm
-	configuration.Verifier.Command = []string{"helm", "test", chartName}
+	configuration.Verifier = verifier
 	configuration.Dependency.Name = helm
 
 	logger.WithFields(log.Fields{

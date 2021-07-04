@@ -9,10 +9,9 @@ import (
 
 func Verify(scenario string, configuration config.ParticleConfiguration, logger *log.Entry) error {
 	var err error
-	var cli cmd.CLI
 	var vrf verifier.Verifier
+	var cli cmd.CLI = cmd.CLI{Binary: "bash"}
 
-	cli = cmd.CLI{Binary: configuration.Verifier.Command[0]}
 	vrf = &verifier.Command{Logger: logger}
 
 	err = vrf.Verify(configuration, &cli)
