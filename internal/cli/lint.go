@@ -10,7 +10,7 @@ func Lint(scenario string, configuration config.ParticleConfiguration, logger *l
 	var err error
 	var cli cmd.CLI = cmd.CLI{Binary: "bash"}
 
-	cmdArgs := []string{"bash", "-c", configuration.Lint}
+	cmdArgs := []string{"bash", "-c", configuration.Linter}
 
 	err = cli.Initialize(logger, cmdArgs)
 	if err != nil {

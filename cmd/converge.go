@@ -31,7 +31,7 @@ func converge(cmd *cobra.Command, args []string) {
 		"driver":      configuration.Driver.Name,
 		"provisioner": configuration.Provisioner.Name,
 		"verifier":    strings.Replace(configuration.Verifier, "\n", " && ", -1),
-		"lint":        strings.Replace(configuration.Lint, "\n", " && ", -1),
+		"linter":      strings.Replace(configuration.Linter, "\n", " && ", -1),
 	}).Debug("Configuration to use")
 
 	err = cli.Converge(scenario, configuration, logger)

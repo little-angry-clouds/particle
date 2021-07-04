@@ -49,7 +49,7 @@ func chart(cmd *cobra.Command, args []string) {
 
 	configuration.Driver.Name = driver
 	configuration.Provisioner.Name = helm
-	configuration.Lint = lint
+	configuration.Linter = lint
 	configuration.Verifier = verifier
 	configuration.Dependency.Name = helm
 
@@ -57,7 +57,7 @@ func chart(cmd *cobra.Command, args []string) {
 		"driver":      driver,
 		"provisioner": helm,
 		"verifier":    helm,
-		"lint":        strings.Replace(lint, "\n", " && ", -1),
+		"linter":      strings.Replace(lint, "\n", " && ", -1),
 	}).Debug("Configuration to create")
 
 	err = config.CreateConfiguration(chartName, scenario, configuration)

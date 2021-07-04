@@ -10,7 +10,7 @@ import (
 type ParticleConfiguration struct {
 	Driver      Driver      `yaml:"driver" validate:"required"`
 	Provisioner Provisioner `yaml:"provisioner" validate:"required"`
-	Lint        string      `yaml:"lint" validate:"required"`
+	Linter      string      `yaml:"lint" validate:"required"`
 	Verifier    string      `yaml:"verifier" validate:"required"`
 	Dependency  Dependency  `yaml:"dependency" validate:"required,eq=helm"`
 	Prepare     []Prepare   `yaml:"prepare,omitempty"`
