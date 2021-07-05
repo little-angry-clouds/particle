@@ -42,22 +42,9 @@ type Prepare struct {
 	Values  map[string]interface{} `yaml:"values,omitempty"`
 }
 
-func CreateConfiguration(path string, scenario string, configuration ParticleConfiguration) error {
-	var configDirPath string = path + "/particle/" + scenario + "/"
-	var configFilePath string = configDirPath + "particle.yml"
+func CreateConfiguration(configDirPath string, configuration ParticleConfiguration) error {
+	var configFilePath string = configDirPath + "/particle.yml"
 	var err error
-
-	// Check if the directory exists
-	_, err = os.Stat(configDirPath)
-	if !os.IsNotExist(err) {
-		return &particleAlreadyInitialized{}
-	}
-
-	// Create directory
-	err = os.MkdirAll(configDirPath, 0755)
-	if err != nil {
-		return err
-	}
 
 	// Create the configuration file
 	conf, err := yaml.Marshal(configuration)

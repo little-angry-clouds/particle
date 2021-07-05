@@ -18,6 +18,7 @@ import (
 func chart(cmd *cobra.Command, args []string) {
 	var scenario string = "default"
 	var driver string
+	var provisioner string
 	var chartName string = args[0]
 	var lint string = "set -e\nhelm lint"
 	var verifier string = "set -e\nhelm test " + chartName
@@ -33,13 +34,16 @@ func chart(cmd *cobra.Command, args []string) {
 	driver, err = cmd.Flags().GetString("driver")
 	customError.CheckGenericError(logger, err)
 
+	provisioner, err = cmd.Flags().GetString("provisioner")
+	customError.CheckGenericError(logger, err)
+
 	// Check if the chart's directory exists and create it if not
 	_, err = os.Stat(chartName)
 	if !os.IsNotExist(err) {
 		customError.CheckGenericError(logger, fmt.Errorf("the helm repository '%s' is already added", chartName))
 	}
 
-	err = os.MkdirAll(chartName, 0755)
+	err = os.MkdirAll(chartName+"/particle/"+scenario, 0755)
 	customError.CheckGenericError(logger, err)
 
 	// Create chart
@@ -47,7 +51,7 @@ func chart(cmd *cobra.Command, args []string) {
 	customError.CheckGenericError(logger, err)
 
 	configuration.Driver.Name = driver
-	configuration.Provisioner.Name = helm
+	configuration.Provisioner.Name = provisioner
 	configuration.Linter = lint
 	configuration.Verifier = verifier
 	configuration.Dependency.Name = helm
@@ -59,7 +63,7 @@ func chart(cmd *cobra.Command, args []string) {
 		"linter":      strings.Replace(lint, "\n", " && ", -1),
 	}).Debug("Configuration to create")
 
-	err = config.CreateConfiguration(chartName, scenario, configuration)
+	err = config.CreateConfiguration(chartName+"/particle/"+scenario, configuration)
 	customError.CheckGenericError(logger, err)
 
 	logger.Info("Initialization finished")
@@ -80,5 +84,6 @@ var chartCmd = &cobra.Command{
 
 func init() {
 	chartCmd.PersistentFlags().StringP("driver", "d", "kind", "driver to use when creating the kubernetes cluster")
+	chartCmd.PersistentFlags().StringP("provisioner", "p", "helm", "provisioner to use when deploying to the kubernetes cluster")
 	initCmd.AddCommand(chartCmd)
 }
