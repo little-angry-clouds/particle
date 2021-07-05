@@ -49,4 +49,5 @@ var convergeCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(convergeCmd)
+	convergeCmd.PersistentFlags().StringP("scenario", "s", "default", "scenario to use")
 }

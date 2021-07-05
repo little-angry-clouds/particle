@@ -48,4 +48,5 @@ var dependencyCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(dependencyCmd)
+	dependencyCmd.PersistentFlags().StringP("scenario", "s", "default", "scenario to use")
 }

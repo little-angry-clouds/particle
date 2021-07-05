@@ -16,7 +16,7 @@ import (
 )
 
 func chart(cmd *cobra.Command, args []string) {
-	var scenario string
+	var scenario string = "default"
 	var driver string
 	var chartName string = args[0]
 	var lint string = "set -e\nhelm lint"
@@ -26,7 +26,6 @@ func chart(cmd *cobra.Command, args []string) {
 	var configuration config.ParticleConfiguration
 
 	debug, _ = cmd.Flags().GetBool("debug")
-	scenario, _ = cmd.Flags().GetString("scenario")
 	logger := helpers.GetLogger(debug)
 
 	logger.Info("Begin initialization")

@@ -48,4 +48,5 @@ var prepareCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(prepareCmd)
+	prepareCmd.PersistentFlags().StringP("scenario", "s", "default", "scenario to use")
 }

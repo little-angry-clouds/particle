@@ -49,4 +49,5 @@ var destroyCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(destroyCmd)
+	destroyCmd.PersistentFlags().StringP("scenario", "s", "default", "scenario to use")
 }

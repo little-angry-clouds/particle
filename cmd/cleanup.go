@@ -49,4 +49,5 @@ var cleanupCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(cleanupCmd)
+	cleanupCmd.PersistentFlags().StringP("scenario", "s", "default", "scenario to use")
 }

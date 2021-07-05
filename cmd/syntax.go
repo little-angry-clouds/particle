@@ -49,4 +49,5 @@ var syntaxCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(syntaxCmd)
+	syntaxCmd.PersistentFlags().StringP("scenario", "s", "default", "scenario to use")
 }

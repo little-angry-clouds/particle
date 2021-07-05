@@ -15,7 +15,6 @@ var rootCmd = &cobra.Command{
 
 func Execute() {
 	rootCmd.PersistentFlags().BoolP("debug", "D", false, "when true gets more verbose logs")
-	rootCmd.PersistentFlags().StringP("scenario", "s", "default", "scenario to use")
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)

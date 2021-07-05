@@ -49,4 +49,5 @@ var lintCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(lintCmd)
+	lintCmd.PersistentFlags().StringP("scenario", "s", "default", "scenario to use")
 }

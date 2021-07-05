@@ -156,4 +156,5 @@ var testCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(testCmd)
+	testCmd.PersistentFlags().StringP("scenario", "s", "default", "scenario to use")
 }
