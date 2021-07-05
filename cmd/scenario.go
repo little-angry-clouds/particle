@@ -47,7 +47,10 @@ func scenario(cmd *cobra.Command, args []string) {
 	// Check if the particle directory exists and exit if not
 	_, err = os.Stat("particle/")
 	if os.IsNotExist(err) {
-		customError.CheckGenericError(logger, fmt.Errorf("the particle directory is not yet created, please initialized first"))
+		_, err = os.Stat("particle/")
+		if !os.IsNotExist(err) {
+			customError.CheckGenericError(logger, err)
+		}
 	}
 
 	// Check if the scenario directory exists and create it if not
