@@ -144,7 +144,7 @@ func (h *Helm) helmInstall(logger *log.Entry, cmd cmd.Cmd, chart string, version
 	// If the chart has some configuration, write it on a temporary file for helm to use it and destroy it when finished
 	if values != nil {
 		// Create temporary file with the defined values
-		file, err := ioutil.TempFile("/tmp/", "particle-"+chartName)
+		file, err := ioutil.TempFile("/tmp/", "particle-helm-"+chartName)
 		if err != nil {
 			return err
 		}

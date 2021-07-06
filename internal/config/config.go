@@ -17,8 +17,9 @@ type ParticleConfiguration struct {
 }
 
 type Driver struct {
-	Name              string `yaml:"name" validate:"required,eq=kind|eq=minikube"`
-	KubernetesVersion string `yaml:"kubernetes-version,omitempty"`
+	Name              string                 `yaml:"name" validate:"required,eq=kind|eq=minikube"`
+	KubernetesVersion string                 `yaml:"kubernetes-version,omitempty"`
+	Values            map[string]interface{} `yaml:"values,omitempty"`
 }
 
 type Provisioner struct {

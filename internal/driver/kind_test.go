@@ -36,11 +36,12 @@ func TestCreate(t *testing.T) {
 		cliError      error
 		stdErr        string
 		k8sVersion    string
+		kindValues    map[string]interface{}
 	}{
-		// Test that the create function works with no error
-		{"1", nil, nil, "", ""},
-		// Test that the create function works with no error
-		{"1", nil, nil, "", "1.19.0"},
+		// Test that the create function works with no error when not using configuration
+		{"1", nil, nil, "", "", nil},
+		// Test that the create function works with no error when setting kubernetes version
+		{"1", nil, nil, "", "1.19.0", nil},
 		// Test that unexpected generic error is handled as an error
 		{"2",
 			// expectedError
@@ -51,6 +52,8 @@ func TestCreate(t *testing.T) {
 			"",
 			// k8sVersion
 			"",
+			// kindValues
+			nil,
 		},
 		// Test that clusterExists error is not handled as an error
 		{"3",
@@ -62,6 +65,21 @@ func TestCreate(t *testing.T) {
 			"failed to create cluster: node(s) already exist for a cluster with the name",
 			// k8sVersion
 			"",
+			// kindValues
+			nil,
+		},
+		// Test that the create function works with no error when using kind values
+		{"4",
+			// expectedError
+			nil,
+			// cliError
+			nil,
+			// stdErr
+			"failed to create cluster: node(s) already exist for a cluster with the name",
+			// k8sVersion
+			"",
+			// kindValues
+			map[string]interface{}{"kind": "Cluster", "apiVersion": "kind.x-k8s.io/v1alpha4"},
 		},
 	}
 
@@ -77,6 +95,7 @@ func TestCreate(t *testing.T) {
 			var configuration config.ParticleConfiguration
 
 			configuration.Driver.KubernetesVersion = tt.k8sVersion
+			configuration.Driver.Values = tt.kindValues
 			err = drv.Create(configuration, &cli)
 			t.Log(fmt.Sprintf("error: %s", err))
 			t.Log(fmt.Sprintf("config value: %s", configuration))
