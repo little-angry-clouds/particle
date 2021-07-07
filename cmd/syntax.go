@@ -24,6 +24,9 @@ func syntax(cmd *cobra.Command, args []string) {
 
 	logger.Info("Begin syntax")
 
+	err = cli.Syntax(scenario, configuration, logger)
+	customError.CheckGenericError(logger, err)
+
 	configuration, err = config.ReadConfiguration(scenario)
 	customError.CheckGenericError(logger, err)
 

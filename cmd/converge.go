@@ -34,6 +34,9 @@ func converge(cmd *cobra.Command, args []string) {
 		"linter":      strings.Replace(configuration.Linter, "\n", " && ", -1),
 	}).Debug("Configuration to use")
 
+	err = cli.Syntax(scenario, configuration, logger)
+	customError.CheckGenericError(logger, err)
+
 	err = cli.Converge(scenario, configuration, logger)
 	customError.CheckGenericError(logger, err)
 
