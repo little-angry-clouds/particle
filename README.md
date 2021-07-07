@@ -4,11 +4,16 @@
 ## About Particle
 Particle is a project designed to aid in the development and testing of Helm charts and other kubernetes manifests.
 
-It provides support for executing the same steps that you do when testing kubernetes manifests, even when using different tools to do so. Those are usually creating a kubernetes cluster, deploy kubernetes manifests on them, lint the manifests or do integration tests on the cluster.
+It provides a consistent set of steps to execute when testing kubernetes manifests, even when using different tools to do so. Those steps would be:
+- Lint your manifests
+- Create a kubernetes cluster
+- Deploy your manifests
+- Verify that what's deployed on the cluster is in its desired state
+- Destroy the cluster
 
-It encourages an approach that results in consistently developed manifests that are well-written, easily understood and maintained.
+It encourages an approach that results in consistently developed manifests, that are well-written, easily understood and maintained.
 
-As you may identified by now, Particle is heavyly inspired on [Molecule](https://github.com/ansible-community/molecule), which provides de same as mentioned but for Ansible roles.
+As you may identified by now, Particle is heavily inspired on [Molecule](https://github.com/ansible-community/molecule), which provides de same as mentioned but for Ansible roles.
 
 ## Getting started
 
