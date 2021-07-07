@@ -22,9 +22,6 @@ func test(cmd *cobra.Command, args []string) {
 	logger := helpers.GetLogger(debug)
 	scenario, _ = cmd.Flags().GetString("scenario")
 
-	err = cli.Syntax(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err)
-
 	configuration, err = config.ReadConfiguration(scenario)
 	customError.CheckGenericError(logger, err)
 

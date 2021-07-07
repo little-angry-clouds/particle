@@ -22,11 +22,6 @@ func destroy(cmd *cobra.Command, args []string) {
 	logger := helpers.GetLogger(debug)
 	scenario, _ = cmd.Flags().GetString("scenario")
 
-	logger.Info("Begin destroy")
-
-	err = cli.Syntax(scenario, configuration, logger)
-	customError.CheckGenericError(logger, err)
-
 	configuration, err = config.ReadConfiguration(scenario)
 	customError.CheckGenericError(logger, err)
 
@@ -36,6 +31,13 @@ func destroy(cmd *cobra.Command, args []string) {
 		"verifier":    strings.Replace(configuration.Verifier, "\n", " && ", -1),
 		"linter":      strings.Replace(configuration.Linter, "\n", " && ", -1),
 	}).Debug("Configuration to use")
+
+	logger.Info("Syntax")
+
+	err = cli.Syntax(scenario, configuration, logger)
+	customError.CheckGenericError(logger, err)
+
+	logger.Info("Begin destroy")
 
 	err = cli.Destroy(scenario, configuration, logger)
 	customError.CheckGenericError(logger, err)

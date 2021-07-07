@@ -22,8 +22,6 @@ func create(cmd *cobra.Command, args []string) {
 	logger := helpers.GetLogger(debug)
 	scenario, _ = cmd.Flags().GetString("scenario")
 
-	logger.Info("Begin create")
-
 	configuration, err = config.ReadConfiguration(scenario)
 	customError.CheckGenericError(logger, err)
 
@@ -34,8 +32,12 @@ func create(cmd *cobra.Command, args []string) {
 		"linter":      strings.Replace(configuration.Linter, "\n", " && ", -1),
 	}).Debug("Configuration to use")
 
+	logger.Info("Syntax")
+
 	err = cli.Syntax(scenario, configuration, logger)
 	customError.CheckGenericError(logger, err)
+
+	logger.Info("Begin create")
 
 	err = cli.Create(scenario, configuration, logger)
 	customError.CheckGenericError(logger, err)

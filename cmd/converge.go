@@ -22,8 +22,6 @@ func converge(cmd *cobra.Command, args []string) {
 	logger := helpers.GetLogger(debug)
 	scenario, _ = cmd.Flags().GetString("scenario")
 
-	logger.Info("Begin converge")
-
 	configuration, err = config.ReadConfiguration(scenario)
 	customError.CheckGenericError(logger, err)
 
@@ -34,8 +32,12 @@ func converge(cmd *cobra.Command, args []string) {
 		"linter":      strings.Replace(configuration.Linter, "\n", " && ", -1),
 	}).Debug("Configuration to use")
 
+	logger.Info("Syntax")
+
 	err = cli.Syntax(scenario, configuration, logger)
 	customError.CheckGenericError(logger, err)
+
+	logger.Info("Begin converge")
 
 	err = cli.Converge(scenario, configuration, logger)
 	customError.CheckGenericError(logger, err)
