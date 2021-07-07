@@ -12,7 +12,7 @@ import (
 	"github.com/little-angry-clouds/particle/internal/config"
 )
 
-func Syntax(scenario string, configuration config.ParticleConfiguration, logger *log.Entry) error {
+func Syntax(configuration config.ParticleConfiguration, logger *log.Entry) error {
 	var err error
 	var stringErrors []string
 

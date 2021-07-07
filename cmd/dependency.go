@@ -33,12 +33,12 @@ func dependency(cmd *cobra.Command, args []string) {
 
 	logger.Info("Syntax")
 
-	err = cli.Syntax(scenario, configuration, logger)
+	err = cli.Syntax(configuration, logger)
 	customError.CheckGenericError(logger, err)
 
 	logger.Info("Begin dependency")
 
-	err = cli.Dependency(scenario, configuration, logger)
+	err = cli.Dependency(configuration, logger)
 	customError.CheckGenericError(logger, err)
 
 	logger.Info("Dependency finished")

@@ -34,12 +34,12 @@ func verify(cmd *cobra.Command, args []string) {
 
 	logger.Info("Syntax")
 
-	err = cli.Syntax(scenario, configuration, logger)
+	err = cli.Syntax(configuration, logger)
 	customError.CheckGenericError(logger, err)
 
 	logger.Info("Begin verify")
 
-	err = cli.Verify(scenario, configuration, logger)
+	err = cli.Verify(configuration, logger)
 	customError.CheckGenericError(logger, err)
 
 	logger.Info("Verify finished")

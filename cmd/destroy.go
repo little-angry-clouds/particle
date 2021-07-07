@@ -34,12 +34,12 @@ func destroy(cmd *cobra.Command, args []string) {
 
 	logger.Info("Syntax")
 
-	err = cli.Syntax(scenario, configuration, logger)
+	err = cli.Syntax(configuration, logger)
 	customError.CheckGenericError(logger, err)
 
 	logger.Info("Begin destroy")
 
-	err = cli.Destroy(scenario, configuration, logger)
+	err = cli.Destroy(configuration, logger)
 	customError.CheckGenericError(logger, err)
 
 	logger.Info("Destroy finished")

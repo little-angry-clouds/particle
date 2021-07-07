@@ -7,7 +7,7 @@ import (
 	"github.com/little-angry-clouds/particle/internal/driver"
 )
 
-func Create(scenario string, configuration config.ParticleConfiguration, logger *log.Entry) error {
+func Create(configuration config.ParticleConfiguration, logger *log.Entry) error {
 	var err error
 	var cli cmd.CLI
 	var drv driver.Driver

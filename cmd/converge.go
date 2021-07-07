@@ -34,12 +34,12 @@ func converge(cmd *cobra.Command, args []string) {
 
 	logger.Info("Syntax")
 
-	err = cli.Syntax(scenario, configuration, logger)
+	err = cli.Syntax(configuration, logger)
 	customError.CheckGenericError(logger, err)
 
 	logger.Info("Begin converge")
 
-	err = cli.Converge(scenario, configuration, logger)
+	err = cli.Converge(configuration, logger)
 	customError.CheckGenericError(logger, err)
 
 	logger.Info("Converge finished")

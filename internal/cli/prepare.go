@@ -7,7 +7,7 @@ import (
 	"github.com/little-angry-clouds/particle/internal/provisioner"
 )
 
-func Prepare(scenario string, configuration config.ParticleConfiguration, logger *log.Entry) error {
+func Prepare(configuration config.ParticleConfiguration, logger *log.Entry) error {
 	var err error
 	var cli cmd.CLI
 	var prv provisioner.Provisioner

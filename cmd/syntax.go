@@ -34,7 +34,7 @@ func syntax(cmd *cobra.Command, args []string) {
 		"linter":      strings.Replace(configuration.Linter, "\n", " && ", -1),
 	}).Debug("Configuration to use")
 
-	err = cli.Syntax(scenario, configuration, logger)
+	err = cli.Syntax(configuration, logger)
 	customError.CheckGenericError(logger, err)
 
 	logger.Info("Syntax finished")

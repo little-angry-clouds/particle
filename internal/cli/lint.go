@@ -6,7 +6,7 @@ import (
 	"github.com/little-angry-clouds/particle/internal/config"
 )
 
-func Lint(scenario string, configuration config.ParticleConfiguration, logger *log.Entry) error {
+func Lint(configuration config.ParticleConfiguration, logger *log.Entry) error {
 	var err error
 	var cli cmd.CLI = cmd.CLI{Binary: "bash"}
 

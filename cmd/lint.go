@@ -34,12 +34,12 @@ func lint(cmd *cobra.Command, args []string) {
 
 	logger.Info("Syntax")
 
-	err = cli.Syntax(scenario, configuration, logger)
+	err = cli.Syntax(configuration, logger)
 	customError.CheckGenericError(logger, err)
 
 	logger.Info("Begin linting")
 
-	err = cli.Lint(scenario, configuration, logger)
+	err = cli.Lint(configuration, logger)
 	customError.CheckGenericError(logger, err)
 
 	logger.Info("Linting finished")

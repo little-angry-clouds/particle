@@ -34,12 +34,12 @@ func create(cmd *cobra.Command, args []string) {
 
 	logger.Info("Syntax")
 
-	err = cli.Syntax(scenario, configuration, logger)
+	err = cli.Syntax(configuration, logger)
 	customError.CheckGenericError(logger, err)
 
 	logger.Info("Begin create")
 
-	err = cli.Create(scenario, configuration, logger)
+	err = cli.Create(configuration, logger)
 	customError.CheckGenericError(logger, err)
 
 	logger.Info("Create finished")

@@ -7,7 +7,7 @@ import (
 	"github.com/little-angry-clouds/particle/internal/verifier"
 )
 
-func Verify(scenario string, configuration config.ParticleConfiguration, logger *log.Entry) error {
+func Verify(configuration config.ParticleConfiguration, logger *log.Entry) error {
 	var err error
 	var vrf verifier.Verifier
 	var cli cmd.CLI = cmd.CLI{Binary: "bash"}

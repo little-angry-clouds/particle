@@ -7,7 +7,7 @@ import (
 	"github.com/little-angry-clouds/particle/internal/driver"
 )
 
-func Destroy(scenario string, configuration config.ParticleConfiguration, logger *log.Entry) error {
+func Destroy(configuration config.ParticleConfiguration, logger *log.Entry) error {
 	var err error
 	var cli cmd.CLI
 	var drv driver.Driver

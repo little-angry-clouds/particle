@@ -34,12 +34,12 @@ func cleanup(cmd *cobra.Command, args []string) {
 
 	logger.Info("Syntax")
 
-	err = cli.Syntax(scenario, configuration, logger)
+	err = cli.Syntax(configuration, logger)
 	customError.CheckGenericError(logger, err)
 
 	logger.Info("Begin cleanup")
 
-	err = cli.Cleanup(scenario, configuration, logger)
+	err = cli.Cleanup(configuration, logger)
 	customError.CheckGenericError(logger, err)
 
 	logger.Info("Cleanup finished")

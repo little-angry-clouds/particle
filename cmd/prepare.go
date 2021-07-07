@@ -33,12 +33,12 @@ func prepare(cmd *cobra.Command, args []string) {
 
 	logger.Info("Syntax")
 
-	err = cli.Syntax(scenario, configuration, logger)
+	err = cli.Syntax(configuration, logger)
 	customError.CheckGenericError(logger, err)
 
 	logger.Info("Begin prepare")
 
-	err = cli.Prepare(scenario, configuration, logger)
+	err = cli.Prepare(configuration, logger)
 	customError.CheckGenericError(logger, err)
 
 	logger.Info("Prepare finished")
