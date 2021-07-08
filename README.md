@@ -19,6 +19,12 @@ As you may identified by now, Particle is heavily inspired on [Molecule](https:/
 
 You may want to begin with [this](https://github.com/little-angry-clouds/particle/wiki/Getting-Started).
 
+## Roadmap
+- Add minikube as a driver to create clusters
+- Add helmfile as a provisioner to deploy manifests
+- Add documentation to use more verifiers
+- Add documentation to use more linters
+
 ## Get involved
 
 If you have an idea or you want to implement an idea from the roadmap, open an issue and we can talk about it!
