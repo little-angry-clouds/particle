@@ -199,7 +199,7 @@ func (h *Helm) helmDelete(cmd cmd.Cmd, chart string) error {
 	switch {
 	case strings.Contains(stderr, "Release not loaded"):
 		err = &chartNotInstalled{Name: chart}
-	case strings.Contains(stderr, "Kubernetes cluster unreachable:"):
+	case strings.Contains(stderr, "Kubernetes cluster unreachable"):
 		err = &chartCantDelete{Name: chart}
 	case strings.Contains(stderr, "exit status 1"):
 		err = customError.FormatGenericGolangOutput(stderr)
