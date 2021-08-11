@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"os"
 	"strings"
 
 	"github.com/apex/log"
@@ -40,6 +41,8 @@ func test(cmd *cobra.Command, args []string) {
 		logger.Warn("Destroy")
 		_ = cli.Destroy(configuration, logger)
 
+		os.Exit(1)
+
 		return
 	}
 
@@ -50,6 +53,8 @@ func test(cmd *cobra.Command, args []string) {
 		logger.WithError(err).Error("An error was detected, exiting")
 		logger.Warn("Destroy")
 		_ = cli.Destroy(configuration, logger)
+
+		os.Exit(1)
 
 		return
 	}
@@ -62,6 +67,8 @@ func test(cmd *cobra.Command, args []string) {
 		logger.Warn("Destroy")
 		_ = cli.Destroy(configuration, logger)
 
+		os.Exit(1)
+
 		return
 	}
 
@@ -73,6 +80,8 @@ func test(cmd *cobra.Command, args []string) {
 		logger.Warn("Destroy")
 		_ = cli.Destroy(configuration, logger)
 
+		os.Exit(1)
+
 		return
 	}
 
@@ -82,6 +91,8 @@ func test(cmd *cobra.Command, args []string) {
 	if err != nil {
 		logger.WithError(err).Error("An error was detected, exiting")
 		_ = cli.Destroy(configuration, logger)
+
+		os.Exit(1)
 
 		return
 	}
@@ -94,6 +105,8 @@ func test(cmd *cobra.Command, args []string) {
 		logger.Warn("Destroy")
 		_ = cli.Destroy(configuration, logger)
 
+		os.Exit(1)
+
 		return
 	}
 
@@ -104,6 +117,8 @@ func test(cmd *cobra.Command, args []string) {
 		logger.WithError(err).Error("An error was detected, exiting")
 		logger.Warn("Destroy")
 		_ = cli.Destroy(configuration, logger)
+
+		os.Exit(1)
 
 		return
 	}
@@ -116,6 +131,8 @@ func test(cmd *cobra.Command, args []string) {
 		logger.Warn("Destroy")
 		_ = cli.Destroy(configuration, logger)
 
+		os.Exit(1)
+
 		return
 	}
 
@@ -127,6 +144,8 @@ func test(cmd *cobra.Command, args []string) {
 		logger.Warn("Destroy")
 		_ = cli.Destroy(configuration, logger)
 
+		os.Exit(1)
+
 		return
 	}
 
@@ -137,6 +156,8 @@ func test(cmd *cobra.Command, args []string) {
 		logger.WithError(err).Error("An error was detected, exiting")
 		logger.Warn("Destroy")
 		_ = cli.Destroy(configuration, logger)
+
+		os.Exit(1)
 
 		return
 	}
