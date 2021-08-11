@@ -27,9 +27,8 @@ RUN git clone https://github.com/bats-core/bats-core.git && cd bats-core && ./in
 RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 && chmod 700 get_helm.sh && bash get_helm.sh --version $HELM_VERSION && rm get_helm.sh
 # Install kubectl
 RUN curl -fsSL -o kubectl https://dl.k8s.io/release/v1.22.0/bin/linux/amd64/kubectl && chmod 700 kubectl && mv kubectl /usr/local/bin/kubectl-1.22.0
-RUN curl -fsSL -o kubectl https://dl.k8s.io/release/v1.21.0/bin/linux/amd64/kubectl && chmod 700 kubectl && mv kubectl /usr/local/bin/kubectl-1.21.0
 RUN curl -fsSL -o kubectl https://dl.k8s.io/release/v1.20.0/bin/linux/amd64/kubectl && chmod 700 kubectl && mv kubectl /usr/local/bin/kubectl-1.20.0
-RUN curl -fsSL -o kubectl https://dl.k8s.io/release/v1.19.0/bin/linux/amd64/kubectl && chmod 700 kubectl && mv kubectl /usr/local/bin/kubectl-1.19.0
 RUN curl -fsSL -o kubectl https://dl.k8s.io/release/v1.18.0/bin/linux/amd64/kubectl && chmod 700 kubectl && mv kubectl /usr/local/bin/kubectl-1.18.0
-RUN curl -fsSL -o kubectl https://dl.k8s.io/release/v1.17.0/bin/linux/amd64/kubectl && chmod 700 kubectl && mv kubectl /usr/local/bin/kubectl-1.17.0
 RUN curl -fsSL -o kubectl https://dl.k8s.io/release/v1.16.0/bin/linux/amd64/kubectl && chmod 700 kubectl && mv kubectl /usr/local/bin/kubectl-1.16.0
+
+COPY particle /usr/local/bin/
