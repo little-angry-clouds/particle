@@ -1,3 +1,4 @@
+---
 before:
   hooks:
     - go mod tidy
@@ -16,6 +17,9 @@ builds:
       - amd64
       - arm
       - arm64
+    ignore:
+      - goos: darwin
+        goarch: arm64
 checksum:
   name_template: 'checksums.txt'
 snapshot:
@@ -54,3 +58,9 @@ brews:
         type: optional
     install: |
       bin.install "particle"
+dockers:
+  - image_templates:
+      - "littleangryclouds/particle:latest"
+      - "littleangryclouds/particle:v{{ .Major }}"
+      - "littleangryclouds/particle:{{ .Tag }}"
+    skip_push: false

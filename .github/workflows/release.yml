@@ -17,6 +17,10 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
+      - name: Login to Docker Registry
+        run: |
+          echo "${{ secrets.DOCKER_HUB }}" | \
+          docker login -u alexperezpujol --password-stdin
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2
         with:
