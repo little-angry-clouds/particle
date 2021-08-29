@@ -7,6 +7,7 @@ import (
 	"github.com/little-angry-clouds/particle/internal/verifier"
 )
 
+// Verify checks that what's deployed on kubernetes has the desired state.
 func Verify(configuration config.ParticleConfiguration, logger *log.Entry) error {
 	var err error
 	var vrf verifier.Verifier

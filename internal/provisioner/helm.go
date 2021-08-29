@@ -14,10 +14,13 @@ import (
 	customError "github.com/little-angry-clouds/particle/internal/error"
 )
 
+// Helm is an implementation of the provisioner interface. It uses helm to manage the kubernetes cluster:
+// https://helm.sh/
 type Helm struct {
 	Logger *log.Entry
 }
 
+// Converge ensures that the deployment is executed on the kubernetes cluster.
 func (h *Helm) Converge(configuration config.ParticleConfiguration, cmd cmd.Cmd) error {
 	var err error
 	var logger *log.Entry = h.Logger
@@ -28,6 +31,7 @@ func (h *Helm) Converge(configuration config.ParticleConfiguration, cmd cmd.Cmd)
 	return err
 }
 
+// Cleanup ensures that there's no rest of the main chart nor of its dependencies.
 func (h *Helm) Cleanup(configuration config.ParticleConfiguration, cmd cmd.Cmd) error {
 	var logger *log.Entry = h.Logger
 	var err error
@@ -63,6 +67,7 @@ func (h *Helm) Cleanup(configuration config.ParticleConfiguration, cmd cmd.Cmd) 
 	return err
 }
 
+// Dependency locally adds all the helm repositories. It basically executes "helm repo add $whatever".
 func (h *Helm) Dependency(configuration config.ParticleConfiguration, cmd cmd.Cmd) error {
 	var logger *log.Entry = h.Logger
 	var err error
@@ -100,6 +105,7 @@ func (h *Helm) Dependency(configuration config.ParticleConfiguration, cmd cmd.Cm
 	return err
 }
 
+// Prepare installs the dependencies.
 func (h *Helm) Prepare(configuration config.ParticleConfiguration, cmd cmd.Cmd) error {
 	var logger *log.Entry = h.Logger
 	var err error
@@ -117,6 +123,7 @@ func (h *Helm) Prepare(configuration config.ParticleConfiguration, cmd cmd.Cmd) 
 	return err
 }
 
+// helmInstall installs the helm chart, whenever is from Converge or from Prepare. It should not be used, it's only for internal usage.
 func (h *Helm) helmInstall(logger *log.Entry, cmd cmd.Cmd, chart string, version string, values map[string]interface{}) error {
 	var err error
 	var chartName string
@@ -181,6 +188,7 @@ func (h *Helm) helmInstall(logger *log.Entry, cmd cmd.Cmd, chart string, version
 	return isRealError(logger, err)
 }
 
+// helmDelete deletes the helm chart, whenever is from Converge or from Prepare. It should not be used, it's only for internal usage.
 func (h *Helm) helmDelete(cmd cmd.Cmd, chart string) error {
 	var logger *log.Entry = h.Logger
 	var err error

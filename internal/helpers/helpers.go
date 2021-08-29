@@ -52,6 +52,7 @@ func GetLogger(debug bool) *log.Entry {
 	return &logger
 }
 
+// Capitalizes a string
 func Capitalize(s string) string {
 	if len(s) == 0 {
 		return s

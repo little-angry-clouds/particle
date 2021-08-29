@@ -11,12 +11,26 @@ import (
 	"github.com/apex/log"
 )
 
+// A Cmd defines an interface to execute some operations with os/exec.
+// Is composed by:
+//   - Initialize: It will do what's necessary to be able to run a command, like set the stdout or the logger.
+//   - Run: It will run the command, duh.
+//   - GetStderr: It will return the stderr of the command. It's usually used to determinate if an error is really an error in particle.
 type Cmd interface {
 	Initialize(*log.Entry, []string) error
 	Run() error
 	GetStderr() string
 }
 
+// A CLI defines the structure that will be used for the Cmd interface.
+// It's composed by:
+//   - Binary: The name of the binary that will be executed.
+//   - Path: The path of the binary that will be executed.
+//   - Args: A list of strings that will be passed as arguments to the command executed.
+//   - Stderr: An interface that will be used to write the stderr.
+//   - Stdout: An interface that will be used to write the stdout.
+//   - Logger: The apex log entry.
+//   - stderrString: The stderr in a string format, used only internally.
 type CLI struct {
 	Binary       string
 	Path         string
@@ -27,6 +41,7 @@ type CLI struct {
 	stderrString string
 }
 
+// Initialize sets the struct attributes necessary to execute the command.
 func (c *CLI) Initialize(logger *log.Entry, args []string) error {
 	c.Args = args
 	c.Stderr = os.Stderr
@@ -43,6 +58,9 @@ func (c *CLI) Initialize(logger *log.Entry, args []string) error {
 	return nil
 }
 
+// Run executes the command. If debug is set, the stderr and stdout of the executed
+// command will be actually redirected to the terminals stderr and stdout.
+// If not, it will be written in a variable used to further analysis of the errors.
 func (c *CLI) Run() error {
 	var err error
 	var stdout, stderr bytes.Buffer
@@ -77,6 +95,7 @@ func (c *CLI) Run() error {
 	return err
 }
 
+// GetStderr returns the stderr in string format.
 func (c *CLI) GetStderr() string {
 	return c.stderrString
 }

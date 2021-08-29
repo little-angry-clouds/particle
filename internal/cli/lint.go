@@ -6,6 +6,7 @@ import (
 	"github.com/little-angry-clouds/particle/internal/config"
 )
 
+// Lint provides a script like way of executing whatever you want it to execute.
 func Lint(configuration config.ParticleConfiguration, logger *log.Entry) error {
 	var err error
 	var cli cmd.CLI = cmd.CLI{Binary: "bash"}

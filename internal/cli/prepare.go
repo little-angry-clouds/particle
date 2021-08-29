@@ -7,6 +7,7 @@ import (
 	"github.com/little-angry-clouds/particle/internal/provisioner"
 )
 
+// Prepare installs the dependencies using a function provided from the provisioner.
 func Prepare(configuration config.ParticleConfiguration, logger *log.Entry) error {
 	var err error
 	var cli cmd.CLI

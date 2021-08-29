@@ -13,10 +13,16 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+// Kind is an implementation of the driver interface. It uses kind to manage the kubernetes cluster:
+// https://kind.sigs.k8s.io/
 type Kind struct {
 	Logger *log.Entry
 }
 
+// Create creates the kubernetes cluster. It will need the k8s cluster version, which is in the
+// configuration, and the name will be created from the path of execution, to give it a more unique name.
+// It's basicallt a wrap for the "kind" command. All of its configuration can be don trough particle's
+// configuration.
 func (k *Kind) Create(configuration config.ParticleConfiguration, cmd cmd.Cmd) error {
 	var logger *log.Entry = k.Logger
 	var kubernetesVersion string = configuration.Driver.KubernetesVersion
@@ -78,6 +84,7 @@ func (k *Kind) Create(configuration config.ParticleConfiguration, cmd cmd.Cmd) e
 	return err
 }
 
+// Destroy destroys the kubernetes cluster. Not much to add to it.
 func (k *Kind) Destroy(configuration config.ParticleConfiguration, cmd cmd.Cmd) error {
 	var logger *log.Entry = k.Logger
 	var err error

@@ -12,6 +12,7 @@ import (
 	"github.com/little-angry-clouds/particle/internal/config"
 )
 
+// Syntax checks that the configuration is valid.
 func Syntax(configuration config.ParticleConfiguration, logger *log.Entry) error {
 	var err error
 	var stringErrors []string

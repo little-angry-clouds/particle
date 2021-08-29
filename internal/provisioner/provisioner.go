@@ -5,6 +5,8 @@ import (
 	"github.com/little-angry-clouds/particle/internal/config"
 )
 
+// Provisioner is the interface that manages the deployments
+// to the kubernetes clusters.
 type Provisioner interface {
 	Converge(config.ParticleConfiguration, cmd.Cmd) error
 	Cleanup(config.ParticleConfiguration, cmd.Cmd) error
