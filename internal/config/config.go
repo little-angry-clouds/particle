@@ -19,20 +19,20 @@ type ParticleConfiguration struct {
 
 // A Driver represents the driver configuration.
 type Driver struct {
-	Name              string                 `yaml:"name" validate:"required,eq=kind|eq=minikube"`
+	Name              string                 `yaml:"name" validate:"required,eq=kind"`
 	KubernetesVersion string                 `yaml:"kubernetes-version,omitempty"`
 	Values            map[string]interface{} `yaml:"values,omitempty"`
 }
 
 // A Provisioner represents the provisioner configuration.
 type Provisioner struct {
-	Name   string                 `yaml:"name" validate:"eq=helm"`
+	Name   string                 `yaml:"name" validate:"eq=helm|eq=helmfile"`
 	Values map[string]interface{} `yaml:"values,omitempty"`
 }
 
 // A Dependency represents a list of chart's repository install locally.
 type Dependency struct {
-	Name   string         `yaml:"name" validate:"eq=helm"`
+	Name   string         `yaml:"name" validate:"eq=helm|eq=helmfile"`
 	Charts []Dependencies `yaml:"charts,omitempty"`
 }
 

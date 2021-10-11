@@ -16,6 +16,9 @@ func Cleanup(configuration config.ParticleConfiguration, logger *log.Entry) erro
 	if configuration.Provisioner.Name == helm {
 		cli = cmd.CLI{Binary: helm}
 		prv = &provisioner.Helm{Logger: logger}
+	} else if configuration.Provisioner.Name == helmfile {
+		cli = cmd.CLI{Binary: helmfile}
+		prv = &provisioner.Helmfile{Logger: logger}
 	}
 
 	err = prv.Cleanup(configuration, &cli)
