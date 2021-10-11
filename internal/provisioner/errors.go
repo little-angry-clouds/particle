@@ -29,12 +29,10 @@ func (e *chartNotInstalled) Error() string {
 	return fmt.Sprintf("chart '%s' is not installed", e.Name)
 }
 
-type chartCantInstall struct {
-	Name string
-}
+type clusterUnreachable struct{}
 
-func (e *chartCantInstall) Error() string {
-	return fmt.Sprintf("%s, so '%s' can't be installed", &clusterNotExists{}, e.Name)
+func (e *clusterUnreachable) Error() string {
+	return "kubernetes cluster unreachable"
 }
 
 type chartCantDelete struct {
@@ -60,7 +58,7 @@ func isRealError(logger *log.Entry, err error) error {
 		logger.Warn(helpers.Capitalize(fmt.Sprintf("%s", err)))
 		err = nil
 	// exists when the chart can't be installed
-	case *chartCantInstall:
+	case *clusterUnreachable:
 		logger.Warn(helpers.Capitalize(fmt.Sprintf("%s", err)))
 		err = nil
 	// Return received error

@@ -60,6 +60,8 @@ func (h *Helm) Cleanup(configuration config.ParticleConfiguration, cmd cmd.Cmd) 
 	name = filepath.Base(path)
 
 	err = h.helmDelete(cmd, name)
+
+	err = isRealError(logger, err)
 	if err != nil {
 		return err
 	}
@@ -179,8 +181,8 @@ func (h *Helm) helmInstall(logger *log.Entry, cmd cmd.Cmd, chart string, version
 	err = cmd.Run()
 
 	stderr := cmd.GetStderr()
-	if strings.Contains(stderr, "Kubernetes cluster unreachable: Get \"http://localhost:8080/version?timeout=32s\": dial tcp 127.0.0.1:8080: connect: connection refused") {
-		err = &chartCantInstall{Name: chart}
+	if strings.Contains(stderr, "Kubernetes cluster unreachable: Get") {
+		err = &clusterUnreachable{}
 	} else if strings.Contains(stderr, "exit status 1") {
 		err = customError.FormatGenericGolangOutput(stderr)
 	}
@@ -188,7 +190,7 @@ func (h *Helm) helmInstall(logger *log.Entry, cmd cmd.Cmd, chart string, version
 	return isRealError(logger, err)
 }
 
-// helmDelete deletes the helm chart, whenever is from Converge or from Prepare. It should not be used, it's only for internal usage.
+// helmDelete deletes the helm chart, whenever is from Converge or from Prepare. It should not be used directly, it's only for internal usage.
 func (h *Helm) helmDelete(cmd cmd.Cmd, chart string) error {
 	var logger *log.Entry = h.Logger
 	var err error
@@ -207,8 +209,8 @@ func (h *Helm) helmDelete(cmd cmd.Cmd, chart string) error {
 	switch {
 	case strings.Contains(stderr, "Release not loaded"):
 		err = &chartNotInstalled{Name: chart}
-	case strings.Contains(stderr, "Kubernetes cluster unreachable"):
-		err = &chartCantDelete{Name: chart}
+	case strings.Contains(stderr, "Kubernetes cluster unreachable: Get"):
+		err = &clusterUnreachable{}
 	case strings.Contains(stderr, "exit status 1"):
 		err = customError.FormatGenericGolangOutput(stderr)
 	}
