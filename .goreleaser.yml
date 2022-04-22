@@ -8,18 +8,18 @@ builds:
     goos:
       - linux
       - darwin
+    goarch:
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - 6
+      - 7
     ldflags:
       - -s -w
       - -X github.com/little-angry-clouds/particle/cmd.Version={{.Version}}
       - -X github.com/little-angry-clouds/particle/cmd.Commit={{.Commit}}
       - -X github.com/little-angry-clouds/particle/cmd.Date={{.Date}}
-    goarch:
-      - amd64
-      - arm
-      - arm64
-    ignore:
-      - goos: darwin
-        goarch: arm64
 checksum:
   name_template: 'checksums.txt'
 snapshot:

@@ -2,6 +2,7 @@
 package cli
 
 const (
-	helm = "helm"
-	kind = "kind"
+	helm     = "helm"
+	kind     = "kind"
+	helmfile = "helmfile"
 )

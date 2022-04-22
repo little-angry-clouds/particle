@@ -16,14 +16,14 @@ import (
 )
 
 func chart(cmd *cobra.Command, args []string) {
-	var scenario string = "default"
 	var driver string
-	var provisioner string
+	var debug bool
+	var err error
+	var scenario string
+	var provisioner string = "helm"
 	var chartName string = args[0]
 	var lint string = "set -e\nhelm lint"
 	var verifier string = "set -e\nhelm test " + chartName
-	var debug bool
-	var err error
 	var configuration config.ParticleConfiguration
 
 	debug, _ = cmd.Flags().GetBool("debug")
@@ -34,8 +34,7 @@ func chart(cmd *cobra.Command, args []string) {
 	driver, err = cmd.Flags().GetString("driver")
 	customError.CheckGenericError(logger, err)
 
-	provisioner, err = cmd.Flags().GetString("provisioner")
-	customError.CheckGenericError(logger, err)
+	scenario, _ = cmd.Flags().GetString("scenario")
 
 	// Check if the chart's directory exists and create it if not
 	_, err = os.Stat(chartName)
@@ -54,12 +53,12 @@ func chart(cmd *cobra.Command, args []string) {
 	configuration.Provisioner.Name = provisioner
 	configuration.Linter = lint
 	configuration.Verifier = verifier
-	configuration.Dependency.Name = helm
+	configuration.Dependency.Name = "helm"
 
 	logger.WithFields(log.Fields{
 		"driver":      driver,
-		"provisioner": helm,
-		"verifier":    helm,
+		"provisioner": "helm",
+		"verifier":    "helm",
 		"linter":      strings.Replace(lint, "\n", " && ", -1),
 	}).Debug("Configuration to create")
 

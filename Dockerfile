@@ -1,12 +1,13 @@
-FROM ubuntu:20.04
+FROM ubuntu:20.04 as main
 
+ARG YAMLLINT_VERSION=1.26.3
 ARG KIND_VERSION=v0.11.1
-ARG YAMLLINT_VERSION=1.26.2
-ARG HELM_VERSION=v3.6.3
+ARG HELM_VERSION=v3.7.0
 ARG BATS_VERSION=v1.4.1
 ARG KUBEVAL_VERSION=v0.16.1
-ARG KUBE_SCORE_VERSION=1.11.0
-ARG KUBE_LINTER_VERSION=0.2.2
+ARG KUBE_SCORE_VERSION=1.12.0
+ARG KUBE_LINTER_VERSION=0.2.5
+ARG HELMFILE_VERSION=v0.141.0
 
 RUN apt update && apt install --no-install-recommends -y python3-pip curl git apt-transport-https gnupg lsb-release ca-certificates
 # Install docker
@@ -36,5 +37,7 @@ RUN curl -fsSL -o kubeval-linux-amd64.tar.gz https://github.com/instrumenta/kube
 RUN curl -fsSL -o kube-score https://github.com/zegl/kube-score/releases/download/v$KUBE_SCORE_VERSION/kube-score_${KUBE_SCORE_VERSION}_linux_amd64 && chmod +x kube-score && mv kube-score /usr/local/bin
 # Install kube-linter
 RUN curl -fsSL -o kube-linter.tar.gz https://github.com/stackrox/kube-linter/releases/download/$KUBE_LINTER_VERSION/kube-linter-linux.tar.gz && tar xf kube-linter.tar.gz && mv kube-linter /usr/local/bin && rm kube-linter.tar.gz
+# Install helmfile
+RUN curl -fsSL -o helmfile https://github.com/roboll/helmfile/releases/download/$HELMFILE_VERSION/helmfile_linux_amd64 && chmod +x helmfile && mv helmfile /usr/local/bin
 
-COPY particle /usr/local/bin/
+COPY particle /usr/local/bin/particle

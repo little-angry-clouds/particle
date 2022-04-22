@@ -67,11 +67,11 @@ func scenario(cmd *cobra.Command, args []string) {
 	configuration.Provisioner.Name = provisioner
 	configuration.Linter = lint
 	configuration.Verifier = verifier
-	configuration.Dependency.Name = helm
+	configuration.Dependency.Name = "helm"
 
 	logger.WithFields(log.Fields{
 		"driver":      driver,
-		"provisioner": helm,
+		"provisioner": "helm",
 		"verifier":    strings.Replace(configuration.Verifier, "\n", " && ", -1),
 		"linter":      strings.Replace(lint, "\n", " && ", -1),
 	}).Debug("Configuration to create")
